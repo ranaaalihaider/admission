@@ -552,11 +552,10 @@
     <div class="card-title"><span class="dot"></span> Google Apps Script (paste in your Sheet)</div>
     <pre style="background:var(--cream-dark);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--navy);font-family:monospace;white-space:pre-wrap;word-break:break-word;">function doPost(e) {
   try {
-    var raw = e.postData.contents;
+    var raw = e.parameter.payload;
     var data = JSON.parse(raw);
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
-    // Add headers if empty
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         "Timestamp","Reg No","Name","B Form","Admission Date",
@@ -719,13 +718,16 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
   };
 
   try {
-    await fetch(APPS_SCRIPT_URL, {
+    // Send as URL-encoded form data via a hidden iframe to avoid CORS
+    const formData = new FormData();
+    formData.append('payload', JSON.stringify(data));
+
+    const res = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(data)
+      body: formData
     });
-    // no-cors means we can't read the response — assume success if no network error
+
     showToast('✅ Registration submitted successfully!', 'success');
     document.getElementById('regForm').reset();
     removePhoto();
