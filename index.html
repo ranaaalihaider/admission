@@ -412,7 +412,7 @@
 
 <div class="header">
   <div class="header-badge">School Admissions</div>
-  <h1>Student Registration-1</h1>
+  <h1>Student Registration</h1>
   <p>Please fill all required fields carefully</p>
   <div class="gold-line"></div>
 </div>
@@ -550,46 +550,75 @@
   <!-- APPS SCRIPT CODE -->
   <div class="card" style="margin-top:32px;">
     <div class="card-title"><span class="dot"></span> Google Apps Script (paste in your Sheet)</div>
-    <pre style="background:var(--cream-dark);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--navy);font-family:monospace;white-space:pre-wrap;word-break:break-word;">function doGet(e) {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    <pre style="background:var(--cream-dark);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--navy);font-family:monospace;white-space:pre-wrap;word-break:break-word;">// ─── CONFIGURATION ───────────────────────────────
+var FOLDER_NAME = "Student Photos";  // Google Drive folder name
+// ─────────────────────────────────────────────────
 
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        "Timestamp","Reg No","Name","B Form","Admission Date",
-        "DOB","Class","Gender","Father Name","Father CNIC",
-        "Mother CNIC","No. Children","Mobile","Address"
-      ]);
-      sheet.getRange(1,1,1,14).setFontWeight("bold")
-        .setBackground("#0f1f3d").setFontColor("#ffffff");
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var photoUrl = "";
+
+    // Upload photo to Google Drive if present
+    if (data.photoBase64 && data.photoBase64.length > 100) {
+      var base64 = data.photoBase64.split(',')[1] || data.photoBase64;
+      var mimeType = data.photoBase64.indexOf('png') > -1 ? 'image/png' : 'image/jpeg';
+      var blob = Utilities.newBlob(Utilities.base64Decode(base64), mimeType, data.name + "_photo.jpg");
+      var folder = getOrCreateFolder(FOLDER_NAME);
+      var file = folder.createFile(blob);
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      photoUrl = "https://drive.google.com/file/d/" + file.getId() + "/view";
     }
 
-    sheet.appendRow([
-      new Date().toLocaleString(),
-      e.parameter.regNo,
-      e.parameter.name,
-      e.parameter.bForm,
-      e.parameter.admissionDate,
-      e.parameter.dob,
-      e.parameter.class,
-      e.parameter.gender,
-      e.parameter.fatherName,
-      e.parameter.fatherCnic,
-      e.parameter.motherCnic,
-      e.parameter.numChildren,
-      e.parameter.mobile,
-      e.parameter.address
-    ]);
+    saveRow(data, photoUrl);
 
     return ContentService
-      .createTextOutput(JSON.stringify({status:"success"}))
+      .createTextOutput(JSON.stringify({status:"success", photoUrl: photoUrl}))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch(err) {
     return ContentService
-      .createTextOutput(JSON.stringify({status:"error",message:err.toString()}))
+      .createTextOutput(JSON.stringify({status:"error", message:err.toString()}))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function doGet(e) {
+  try {
+    saveRow(e.parameter, "");
+    return ContentService
+      .createTextOutput(JSON.stringify({status:"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:"error", message:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function saveRow(d, photoUrl) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      "Timestamp","Reg No","Name","B Form","Admission Date",
+      "DOB","Class","Gender","Father Name","Father CNIC",
+      "Mother CNIC","No. Children","Mobile","Address","Photo"
+    ]);
+    sheet.getRange(1,1,1,15).setFontWeight("bold")
+      .setBackground("#0f1f3d").setFontColor("#ffffff");
+  }
+  sheet.appendRow([
+    new Date().toLocaleString(),
+    d.regNo, d.name, d.bForm, d.admissionDate,
+    d.dob, d.class, d.gender, d.fatherName,
+    d.fatherCnic, d.motherCnic, d.numChildren,
+    d.mobile, d.address, photoUrl || ""
+  ]);
+}
+
+function getOrCreateFolder(name) {
+  var folders = DriveApp.getFoldersByName(name);
+  return folders.hasNext() ? folders.next() : DriveApp.createFolder(name);
 }</pre>
   </div>
 
@@ -602,7 +631,7 @@
 // =============================================
 // CONFIGURATION — Replace with your Web App URL
 // =============================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHy9UtMql7i24f9m0dID6ZlUjDI7WdUUlvqZy5QEtx7Y9hecM1aJFMb9ooIZuz1UU/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVzsvvQtKPdIj8CVvX7pyUyvMeT0FFF2YZDmmG0PtSRW6gfFuPX3thLbhaArG7FjM/exec";
 // =============================================
 
 let photoBase64 = null;
@@ -721,19 +750,18 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
     numChildren: document.getElementById('numChildren').value,
     mobile: document.getElementById('mobile').value.trim(),
     address: document.getElementById('address').value.trim(),
-    photoUrl: photoBase64 ? "Photo attached" : ""
+    photoBase64: photoBase64 || ''
   };
 
   try {
-    // Build URL with data as query parameters (GET is CORS-safe with Apps Script)
-    const params = new URLSearchParams();
-    Object.keys(data).forEach(key => params.append(key, data[key] || ''));
-    
-    const url = APPS_SCRIPT_URL + '?' + params.toString();
-    
-    const res = await fetch(url, { method: 'GET' });
+    // Use POST with JSON for photo support
+    // Apps Script doPost with ContentService handles CORS for cross-origin requests
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
     const json = await res.json();
-    
     if (json.status === 'success') {
       showToast('✅ Registration submitted successfully!', 'success');
       document.getElementById('regForm').reset();
@@ -742,8 +770,27 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
       throw new Error(json.message || 'Script error');
     }
   } catch (err) {
-    showToast('❌ Submission failed. Please check your internet connection.', 'error-toast');
-    console.error(err);
+    // Fallback: if CORS blocks POST, use GET without photo
+    try {
+      const params = new URLSearchParams();
+      Object.keys(data).forEach(key => {
+        if (key !== 'photoBase64') params.append(key, data[key] || '');
+      });
+      params.append('photoBase64', '');
+      const url = APPS_SCRIPT_URL + '?' + params.toString();
+      const res2 = await fetch(url, { method: 'GET' });
+      const json2 = await res2.json();
+      if (json2.status === 'success') {
+        showToast('✅ Submitted! (Photo not saved — size too large for GET)', 'success');
+        document.getElementById('regForm').reset();
+        removePhoto();
+      } else {
+        throw new Error(json2.message);
+      }
+    } catch(err2) {
+      showToast('❌ Submission failed. Check your internet connection.', 'error-toast');
+      console.error(err2);
+    }
   } finally {
     btn.disabled = false;
     btn.classList.remove('loading');
