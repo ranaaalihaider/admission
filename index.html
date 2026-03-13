@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --navy-mid: #1a3260;
+    --gold: #c8a84b;
+    --gold-light: #e8c96a;
+    --cream: #faf8f3;
+    --cream-dark: #f0ece0;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --border: #d4cfc0;
+    --error: #c0392b;
+    --success: #27ae60;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(15,31,61,0.10);
+    --shadow-lg: 0 8px 40px rgba(15,31,61,0.16);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    color: var(--white);
+    padding: 36px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(200,168,75,0.12);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(200,168,75,0.08);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(200,168,75,0.2);
+    border: 1px solid rgba(200,168,75,0.5);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .header p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+  .gold-line {
+    width: 48px;
+    height: 3px;
+    background: var(--gold);
+    margin: 14px auto 0;
+    border-radius: 2px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 28px 16px 60px;
+  }
+
+  /* PHOTO UPLOAD */
+  .photo-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+  .photo-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .photo-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    background: var(--cream-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 18px rgba(200,168,75,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .photo-preview:hover { transform: scale(1.03); box-shadow: 0 6px 24px rgba(200,168,75,0.35); }
+  .photo-preview img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  .photo-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+  }
+  .photo-icon svg { opacity: 0.5; }
+  .photo-icon span { font-size: 11px; font-weight: 500; }
+  .photo-overlay {
+    position: absolute;
+    inset: 0; border-radius: 50%;
+    background: rgba(15,31,61,0.5);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .photo-preview:hover .photo-overlay { opacity: 1; }
+  .photo-overlay svg { color: white; }
+  .photo-btns {
+    display: flex; gap: 8px;
+  }
+  .photo-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none; cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-change {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  .btn-change:hover { background: var(--gold-light); }
+  .btn-remove {
+    background: transparent;
+    border: 1.5px solid var(--error);
+    color: var(--error);
+    display: none;
+  }
+  .btn-remove:hover { background: var(--error); color: white; }
+  #photoInput { display: none; }
+  .photo-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(212,207,192,0.5);
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid var(--cream-dark);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* GRID */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .full { grid-column: 1 / -1; }
+
+  /* FIELD */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .req { color: var(--gold); margin-left: 2px; }
+  input, select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    width: 100%;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(200,168,75,0.15);
+  }
+  input.error, select.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(192,57,43,0.10);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+  .err-msg {
+    font-size: 11px;
+    color: var(--error);
+    font-weight: 500;
+    display: none;
+  }
+  .err-msg.show { display: block; }
+
+  /* GENDER RADIO */
+  .gender-group {
+    display: flex;
+    gap: 10px;
+  }
+  .gender-opt {
+    flex: 1;
+    position: relative;
+  }
+  .gender-opt input[type="radio"] {
+    position: absolute; opacity: 0; width: 0;
+  }
+  .gender-opt label {
+    display: flex; align-items: center; justify-content: center;
+    gap: 7px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    color: var(--text-muted);
+    width: 100%;
+  }
+  .gender-opt input[type="radio"]:checked + label {
+    border-color: var(--gold);
+    background: rgba(200,168,75,0.08);
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .gender-opt label svg { flex-shrink: 0; }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(15,31,61,0.25);
+  }
+  .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(15,31,61,0.30);
+  }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled {
+    opacity: 0.7; cursor: not-allowed;
+  }
+  .submit-btn .btn-text {}
+  .submit-btn .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .submit-btn.loading .spinner { display: block; }
+  .submit-btn.loading .btn-text { opacity: 0.7; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--navy);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    transition: transform 0.35s cubic-bezier(.22,1,.36,1), opacity 0.35s;
+    opacity: 0;
+    max-width: calc(100vw - 32px);
+    text-align: center;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { background: var(--success); }
+  .toast.error-toast { background: var(--error); }
+
+  /* SETUP NOTICE */
+  .setup-notice {
+    background: rgba(200,168,75,0.08);
+    border: 1.5px solid rgba(200,168,75,0.4);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .setup-notice strong { color: var(--navy); }
+  .setup-notice code {
+    background: var(--cream-dark);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--navy);
+    font-family: monospace;
+  }
+  .setup-notice ol { padding-left: 18px; margin-top: 8px; }
+  .setup-notice ol li { margin-bottom: 4px; }
+  .setup-notice a { color: var(--navy); font-weight: 600; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 540px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .full { grid-column: 1; }
+    .card { padding: 20px 16px; }
+    .header { padding: 28px 16px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">School Admissions</div>
+  <h1>Student Registration</h1>
+  <p>Please fill all required fields carefully</p>
+  <div class="gold-line"></div>
+</div>
+
+<div class="container">
+
+
+
+  <!-- PHOTO -->
+  <div class="photo-section">
+    <div class="photo-wrapper">
+      <div class="photo-preview" id="photoPreview" onclick="document.getElementById('photoInput').click()">
+        <div class="photo-icon" id="photoIcon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Add Photo</span>
+        </div>
+        <img id="photoImg" src="" alt="Student Photo">
+        <div class="photo-overlay">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(this)">
+      <div class="photo-btns">
+        <button type="button" class="photo-btn btn-change" onclick="document.getElementById('photoInput').click()">Upload Photo</button>
+        <button type="button" class="photo-btn btn-remove" id="removeBtn" onclick="removePhoto()">Remove</button>
+      </div>
+      <div class="photo-label">Student passport photo (optional)</div>
+    </div>
+  </div>
+
+  <form id="regForm" novalidate>
+
+    <!-- REGISTRATION INFO -->
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> Registration Information</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Registration No <span class="req">*</span></label>
+          <input type="text" id="regNo" placeholder="e.g. 2024-001" required>
+          <span class="err-msg" id="err-regNo">Required</span>
+        </div>
+        <div class="field">
+          <label>Admission Date <span class="req">*</span></label>
+          <input type="date" id="admissionDate" required>
+          <span class="err-msg" id="err-admissionDate">Required</span>
+        </div>
+        <div class="field">
+          <label>Class <span class="req">*</span></label>
+          <select id="class" required>
+            <option value="">Please Select</option>
+            <option>NURSERY</option>
+            <option>PREP</option>
+            <option>1</option><option>2</option><option>3</option>
+            <option>4</option><option>5</option><option>6</option>
+            <option>7</option><option>8</option>
+          </select>
+          <span class="err-msg" id="err-class">Required</span>
+        </div>
+        <div class="field">
+          <label>B Form No <span class="req">*</span></label>
+          <input type="text" id="bForm" placeholder="e.g. 00000-0000000-0" required>
+          <span class="err-msg" id="err-bForm">Required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENT INFO -->
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> Student Information</div>
+      <div class="form-grid">
+        <div class="field full">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="name" placeholder="Student's full name" required>
+          <span class="err-msg" id="err-name">Required</span>
+        </div>
+        <div class="field">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob" required>
+          <span class="err-msg" id="err-dob">Required</span>
+        </div>
+        <div class="field">
+          <label>Gender <span class="req">*</span></label>
+          <select id="gender" required>
+            <option value="">Please Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <span class="err-msg" id="err-gender">Required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARENT/GUARDIAN INFO -->
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> Parent / Guardian Information</div>
+      <div class="form-grid">
+        <div class="field full">
+          <label>Father Name <span class="req">*</span></label>
+          <input type="text" id="fatherName" placeholder="Father's full name" required>
+          <span class="err-msg" id="err-fatherName">Required</span>
+        </div>
+        <div class="field">
+          <label>Father / Guardian CNIC <span class="req">*</span></label>
+          <input type="text" id="fatherCnic" placeholder="00000-0000000-0" maxlength="15" required>
+          <span class="err-msg" id="err-fatherCnic">Enter valid CNIC (e.g. 12345-1234567-1)</span>
+        </div>
+        <div class="field">
+          <label>Mother CNIC</label>
+          <input type="text" id="motherCnic" placeholder="00000-0000000-0" maxlength="15">
+        </div>
+        <div class="field">
+          <label>No. of Children</label>
+          <input type="number" id="numChildren" placeholder="e.g. 3" min="1" max="20">
+        </div>
+        <div class="field">
+          <label>Mobile No <span class="req">*</span></label>
+          <input type="tel" id="mobile" placeholder="03xx-xxxxxxx" required>
+          <span class="err-msg" id="err-mobile">Enter valid mobile number</span>
+        </div>
+        <div class="field full">
+          <label>Permanent Address <span class="req">*</span></label>
+          <input type="text" id="address" placeholder="House No, Street, City" required>
+          <span class="err-msg" id="err-address">Required</span>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">
+      <span class="btn-text">Submit Registration</span>
+      <div class="spinner"></div>
+    </button>
+
+  </form>
+
+  <!-- APPS SCRIPT CODE -->
+  <div class="card" style="margin-top:32px;">
+    <div class="card-title"><span class="dot"></span> Google Apps Script (paste in your Sheet)</div>
+    <pre style="background:var(--cream-dark);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--navy);font-family:monospace;white-space:pre-wrap;word-break:break-word;">function doPost(e) {
+  try {
+    var raw = e.postData.contents;
+    var data = JSON.parse(raw);
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+    // Add headers if empty
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "Timestamp","Reg No","Name","B Form","Admission Date",
+        "DOB","Class","Gender","Father Name","Father CNIC",
+        "Mother CNIC","No. Children","Mobile","Address","Photo"
+      ]);
+      sheet.getRange(1,1,1,15).setFontWeight("bold")
+        .setBackground("#0f1f3d").setFontColor("#ffffff");
+    }
+
+    sheet.appendRow([
+      new Date().toLocaleString(),
+      data.regNo, data.name, data.bForm, data.admissionDate,
+      data.dob, data.class, data.gender, data.fatherName,
+      data.fatherCnic, data.motherCnic, data.numChildren,
+      data.mobile, data.address, data.photoUrl || ""
+    ]);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({status:"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:"error",message:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =============================================
+// CONFIGURATION — Replace with your Web App URL
+// =============================================
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFCWsAVHX0BaJBItvnXzLrRl2TTX0CX9rK4oAA08a21Z-Lrxl72jF97CNs7aN6r0k/exec";
+// =============================================
+
+let photoBase64 = null;
+
+// --- Photo Handling ---
+function handlePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    photoBase64 = e.target.result;
+    const img = document.getElementById('photoImg');
+    img.src = photoBase64;
+    img.style.display = 'block';
+    document.getElementById('photoIcon').style.display = 'none';
+    document.getElementById('removeBtn').style.display = 'inline-flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  photoBase64 = null;
+  document.getElementById('photoImg').style.display = 'none';
+  document.getElementById('photoImg').src = '';
+  document.getElementById('photoIcon').style.display = 'flex';
+  document.getElementById('removeBtn').style.display = 'none';
+  document.getElementById('photoInput').value = '';
+}
+
+// --- CNIC Auto-format ---
+function formatCnic(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length > 5 && v.length <= 12) v = v.slice(0,5) + '-' + v.slice(5);
+  else if (v.length > 12) v = v.slice(0,5) + '-' + v.slice(5,12) + '-' + v.slice(12,13);
+  input.value = v;
+}
+document.getElementById('fatherCnic').addEventListener('input', function(){ formatCnic(this); });
+document.getElementById('motherCnic').addEventListener('input', function(){ formatCnic(this); });
+
+// --- Validation ---
+function validate() {
+  let valid = true;
+  const required = ['regNo','name','bForm','admissionDate','dob','class','gender','fatherName','fatherCnic','mobile','address'];
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el.value.trim()) {
+      el.classList.add('error');
+      if (err) err.classList.add('show');
+      valid = false;
+    } else {
+      el.classList.remove('error');
+      if (err) err.classList.remove('show');
+    }
+  });
+
+
+  const cnicRegex = /^\d{5}-\d{7}-\d{1}$/;
+  const fCnic = document.getElementById('fatherCnic');
+  const errFCnic = document.getElementById('err-fatherCnic');
+  if (fCnic.value && !cnicRegex.test(fCnic.value)) {
+    fCnic.classList.add('error');
+    errFCnic.classList.add('show');
+    valid = false;
+  }
+
+  return valid;
+}
+
+// --- Clear error on input ---
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('input', function() {
+    this.classList.remove('error');
+    const err = document.getElementById('err-' + this.id);
+    if (err) err.classList.remove('show');
+  });
+});
+
+// --- Toast ---
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// --- Submit ---
+document.getElementById('regForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!validate()) {
+    showToast('Please fill all required fields correctly.', 'error-toast');
+    return;
+  }
+
+  if (APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL") {
+    showToast('⚠️ Please set up your Google Apps Script URL first.', 'error-toast');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const data = {
+    regNo: document.getElementById('regNo').value.trim(),
+    name: document.getElementById('name').value.trim(),
+    bForm: document.getElementById('bForm').value.trim(),
+    admissionDate: document.getElementById('admissionDate').value,
+    dob: document.getElementById('dob').value,
+    class: document.getElementById('class').value,
+    gender: document.getElementById('gender').value,
+    fatherName: document.getElementById('fatherName').value.trim(),
+    fatherCnic: document.getElementById('fatherCnic').value.trim(),
+    motherCnic: document.getElementById('motherCnic').value.trim(),
+    numChildren: document.getElementById('numChildren').value,
+    mobile: document.getElementById('mobile').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    photoUrl: photoBase64 ? "Photo attached" : ""
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    });
+    // no-cors means we can't read the response — assume success if no network error
+    showToast('✅ Registration submitted successfully!', 'success');
+    document.getElementById('regForm').reset();
+    removePhoto();
+  } catch (err) {
+    showToast('❌ Submission failed. Please check your internet connection.', 'error-toast');
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+});
+</script>
+
+</body>
+</html>
