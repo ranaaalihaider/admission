@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Registration Form2</title>
+<title>Student Registration Form</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -412,7 +412,7 @@
 
 <div class="header">
   <div class="header-badge">School Admissions</div>
-  <h1>Student Registration</h1>
+  <h1>Student Registration-1</h1>
   <p>Please fill all required fields carefully</p>
   <div class="gold-line"></div>
 </div>
@@ -550,28 +550,35 @@
   <!-- APPS SCRIPT CODE -->
   <div class="card" style="margin-top:32px;">
     <div class="card-title"><span class="dot"></span> Google Apps Script (paste in your Sheet)</div>
-    <pre style="background:var(--cream-dark);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--navy);font-family:monospace;white-space:pre-wrap;word-break:break-word;">function doPost(e) {
+    <pre style="background:var(--cream-dark);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--navy);font-family:monospace;white-space:pre-wrap;word-break:break-word;">function doGet(e) {
   try {
-    var raw = e.parameter.payload;
-    var data = JSON.parse(raw);
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         "Timestamp","Reg No","Name","B Form","Admission Date",
         "DOB","Class","Gender","Father Name","Father CNIC",
-        "Mother CNIC","No. Children","Mobile","Address","Photo"
+        "Mother CNIC","No. Children","Mobile","Address"
       ]);
-      sheet.getRange(1,1,1,15).setFontWeight("bold")
+      sheet.getRange(1,1,1,14).setFontWeight("bold")
         .setBackground("#0f1f3d").setFontColor("#ffffff");
     }
 
     sheet.appendRow([
       new Date().toLocaleString(),
-      data.regNo, data.name, data.bForm, data.admissionDate,
-      data.dob, data.class, data.gender, data.fatherName,
-      data.fatherCnic, data.motherCnic, data.numChildren,
-      data.mobile, data.address, data.photoUrl || ""
+      e.parameter.regNo,
+      e.parameter.name,
+      e.parameter.bForm,
+      e.parameter.admissionDate,
+      e.parameter.dob,
+      e.parameter.class,
+      e.parameter.gender,
+      e.parameter.fatherName,
+      e.parameter.fatherCnic,
+      e.parameter.motherCnic,
+      e.parameter.numChildren,
+      e.parameter.mobile,
+      e.parameter.address
     ]);
 
     return ContentService
@@ -595,7 +602,7 @@
 // =============================================
 // CONFIGURATION — Replace with your Web App URL
 // =============================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFCWsAVHX0BaJBItvnXzLrRl2TTX0CX9rK4oAA08a21Z-Lrxl72jF97CNs7aN6r0k/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHy9UtMql7i24f9m0dID6ZlUjDI7WdUUlvqZy5QEtx7Y9hecM1aJFMb9ooIZuz1UU/exec";
 // =============================================
 
 let photoBase64 = null;
@@ -718,19 +725,22 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
   };
 
   try {
-    // Send as URL-encoded form data via a hidden iframe to avoid CORS
-    const formData = new FormData();
-    formData.append('payload', JSON.stringify(data));
-
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    });
-
-    showToast('✅ Registration submitted successfully!', 'success');
-    document.getElementById('regForm').reset();
-    removePhoto();
+    // Build URL with data as query parameters (GET is CORS-safe with Apps Script)
+    const params = new URLSearchParams();
+    Object.keys(data).forEach(key => params.append(key, data[key] || ''));
+    
+    const url = APPS_SCRIPT_URL + '?' + params.toString();
+    
+    const res = await fetch(url, { method: 'GET' });
+    const json = await res.json();
+    
+    if (json.status === 'success') {
+      showToast('✅ Registration submitted successfully!', 'success');
+      document.getElementById('regForm').reset();
+      removePhoto();
+    } else {
+      throw new Error(json.message || 'Script error');
+    }
   } catch (err) {
     showToast('❌ Submission failed. Please check your internet connection.', 'error-toast');
     console.error(err);
