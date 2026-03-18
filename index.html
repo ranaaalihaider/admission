@@ -4,129 +4,168 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Registry</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f0f4ff; --card-bg: #fff; --primary: #4361ee;
-    --primary-light: #eef0fd; --text: #1a1a2e; --muted: #6b7280;
-    --border: #e2e8f0; --shadow: 0 2px 16px rgba(67,97,238,0.09); --radius: 16px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 48px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── Header ── */
-  header { background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%); padding: 20px 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 24px rgba(67,97,238,0.28); }
-  header h1 { font-family: 'Baloo 2', cursive; font-size: 1.55rem; font-weight: 800; color: #fff; }
-  header p  { color: rgba(255,255,255,0.72); font-size: 0.8rem; margin-top: 2px; }
+:root {
+  --bg: #eef2ff;
+  --card: #ffffff;
+  --primary: #4f46e5;
+  --text: #111827;
+  --sub: #6b7280;
+  --border: #e5e7eb;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(79,70,229,.08);
+}
 
-  /* ── Controls ── */
-  .controls { padding: 12px 14px 4px; position: sticky; top: 74px; z-index: 90; background: var(--bg); border-bottom: 1px solid var(--border); }
-  .search-wrap { position: relative; margin-bottom: 8px; }
-  .search-wrap .s-ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; width:16px; height:16px; flex-shrink:0; }
-  #search { width: 100%; padding: 11px 14px 11px 42px; border: 1.5px solid var(--border); border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 0.93rem; background: var(--card-bg); color: var(--text); outline: none; transition: border-color .2s, box-shadow .2s; }
-  #search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67,97,238,0.11); }
-  .filters { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 8px; }
-  select { flex: 1; min-width: 120px; padding: 9px 30px 9px 11px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 0.85rem; background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center; color: var(--text); outline: none; cursor: pointer; appearance: none; transition: border-color .2s; }
-  select:focus { border-color: var(--primary); }
-  .stats-bar { display: flex; gap: 7px; padding: 0 1px 8px; overflow-x: auto; scrollbar-width: none; }
-  .stats-bar::-webkit-scrollbar { display: none; }
-  .stat-chip { flex-shrink: 0; background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 9px; padding: 5px 11px; font-size: 0.76rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
-  .stat-chip span { color: var(--primary); font-size: 0.92rem; margin-right: 2px; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; padding-bottom: 50px; color: var(--text); }
 
-  /* ── Grid ── */
-  .grid { padding: 14px 14px 0; display: grid; gap: 13px; grid-template-columns: 1fr; }
-  @media (min-width: 600px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  padding: 18px 20px 14px; text-align: center;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 3px 20px rgba(79,70,229,.35);
+}
+header h1 { font-family: 'Baloo 2', cursive; font-size: 1.5rem; font-weight: 800; color: #fff; }
+#hcount   { color: rgba(255,255,255,.65); font-size: 0.78rem; margin-top: 2px; }
 
-  /* ── Card ── */
-  .card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); border: 1.5px solid var(--border); overflow: hidden; transition: transform .16s, box-shadow .16s; animation: fadeUp .32s ease both; }
-  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(67,97,238,0.14); }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+/* ── CONTROLS ── */
+.controls {
+  padding: 10px 14px 0;
+  position: sticky; top: 68px; z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+.search-wrap { position: relative; margin-bottom: 7px; }
+.search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--sub); }
+#search {
+  width: 100%; padding: 10px 12px 10px 38px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: 0.9rem;
+  background: var(--card); color: var(--text); outline: none;
+}
+#search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+select {
+  flex: 1; min-width: 115px;
+  padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 9px;
+  font-family: 'Nunito', sans-serif; font-size: 0.82rem;
+  background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 9px center;
+  color: var(--text); outline: none; cursor: pointer; appearance: none;
+}
+select:focus { border-color: var(--primary); }
 
-  /* ── TOP STRIP — colored left border accent ── */
-  .card-top { height: 5px; width: 100%; }
-  .top-admitted   { background: linear-gradient(90deg, #16a34a, #4ade80); }
-  .top-pending    { background: linear-gradient(90deg, #ca8a04, #fbbf24); }
-  .top-waitlist   { background: linear-gradient(90deg, #ea580c, #fb923c); }
-  .top-rejected   { background: linear-gradient(90deg, #dc2626, #f87171); }
-  .top-incomplete { background: linear-gradient(90deg, #9333ea, #c084fc); }
+.stats-bar { display: flex; gap: 6px; padding: 8px 0 0; overflow-x: auto; scrollbar-width: none; }
+.stats-bar::-webkit-scrollbar { display: none; }
+.chip { flex-shrink: 0; padding: 4px 11px; border-radius: 20px; font-size: 0.74rem; font-weight: 800; background: var(--card); border: 1.5px solid var(--border); color: var(--sub); white-space: nowrap; }
+.chip b { color: var(--primary); }
 
-  /* ── Card Header: avatar + name + status pill ── */
-  .card-header {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 14px 12px;
-    border-bottom: 1.5px solid var(--border);
-    background: linear-gradient(135deg, #f5f7ff 0%, #fff 100%);
-  }
-  .av-wrap { position: relative; flex-shrink: 0; }
-  .av-img { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; border: 2.5px solid var(--primary); display: block; }
-  .av-txt { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.4rem; color: #fff; }
+/* ── GRID ── */
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 14px; }
+@media(min-width:580px)  { .grid { grid-template-columns: repeat(2,1fr); } }
+@media(min-width:960px)  { .grid { grid-template-columns: repeat(3,1fr); } }
 
-  .hinfo  { flex: 1; min-width: 0; }
-  .name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .sname  { font-family: 'Baloo 2', cursive; font-size: 1.08rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+/* ── CARD ── */
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); border: 1.5px solid var(--border);
+  overflow: hidden; animation: up .3s ease both;
+  transition: transform .15s, box-shadow .15s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(79,70,229,.15); }
+@keyframes up { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
-  /* STATUS PILL — right of name */
-  .status-pill {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 9px; border-radius: 20px;
-    font-size: 0.7rem; font-weight: 800; letter-spacing: .2px;
-    white-space: nowrap; flex-shrink: 0;
-  }
-  .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .sp-admitted   { background: #dcfce7; color: #15803d; } .sp-admitted   .dot { background: #16a34a; }
-  .sp-pending    { background: #fef9c3; color: #a16207; } .sp-pending    .dot { background: #ca8a04; }
-  .sp-waitlist   { background: #ffedd5; color: #c2410c; } .sp-waitlist   .dot { background: #ea580c; }
-  .sp-rejected   { background: #fee2e2; color: #b91c1c; } .sp-rejected   .dot { background: #dc2626; }
-  .sp-incomplete { background: #f3e8ff; color: #7e22ce; } .sp-incomplete .dot { background: #9333ea; }
+/* ── STATUS BANNER — FULL WIDTH TOP OF CARD ── */
+.status-banner {
+  width: 100%;
+  padding: 7px 14px;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.78rem; font-weight: 800;
+  letter-spacing: .3px; text-transform: uppercase;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.status-banner .s-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.status-banner .s-label { flex: 1; }
 
-  .rnum   { font-size: 0.71rem; color: var(--muted); margin-top: 3px; font-weight: 600; }
-  .badges { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
-  .badge  { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.69rem; font-weight: 800; }
-  .bc { background:#eef0fd; color:var(--primary); }
-  .bm { background:#dbeafe; color:#1d4ed8; }
-  .bf { background:#fce7f3; color:#be185d; }
+/* Status colour themes */
+.sb-admitted   { background: #d1fae5; color: #065f46; } .sb-admitted   .s-dot { background:#059669; }
+.sb-pending    { background: #fef3c7; color: #92400e; } .sb-pending    .s-dot { background:#d97706; }
+.sb-waitlist   { background: #ffedd5; color: #9a3412; } .sb-waitlist   .s-dot { background:#ea580c; }
+.sb-rejected   { background: #fee2e2; color: #991b1b; } .sb-rejected   .s-dot { background:#dc2626; }
+.sb-incomplete { background: #ede9fe; color: #5b21b6; } .sb-incomplete .s-dot { background:#7c3aed; }
 
-  /* ── Card Body ── */
-  .card-body { padding: 12px 14px 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .irow { display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px 6px 0; border-bottom: 1px solid #f1f5f9; }
-  .irow:nth-last-child(-n+2) { border-bottom: none; }
-  .irow.full { grid-column: 1 / -1; padding-right: 0; border-bottom: none; }
-  .iico { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .iico svg { width: 12px; height: 12px; display: block; }
-  .ib  { background:#dbeafe; color:#1d4ed8; }
-  .ip  { background:#f3e8ff; color:#7c3aed; }
-  .ig  { background:#dcfce7; color:#16a34a; }
-  .io  { background:#ffedd5; color:#ea580c; }
-  .ik  { background:#fce7f3; color:#be185d; }
-  .it  { background:#ccfbf1; color:#0d9488; }
-  .ilbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; font-weight: 700; line-height: 1; }
-  .ival { font-size: 0.84rem; color: var(--text); font-weight: 600; line-height: 1.35; word-break: break-word; margin-top: 2px; }
+/* ── TOP ACCENT LINE (thin coloured bar) ── */
+.accent { height: 4px; }
+.ac-admitted   { background: linear-gradient(90deg,#059669,#34d399); }
+.ac-pending    { background: linear-gradient(90deg,#d97706,#fbbf24); }
+.ac-waitlist   { background: linear-gradient(90deg,#ea580c,#fb923c); }
+.ac-rejected   { background: linear-gradient(90deg,#dc2626,#f87171); }
+.ac-incomplete { background: linear-gradient(90deg,#7c3aed,#a78bfa); }
 
-  /* ── Card Footer ── */
-  .card-footer { padding: 8px 14px 9px; border-top: 1.5px solid var(--border); display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--muted); background: #fafbff; flex-wrap: wrap; }
-  .ttag { background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 3px 9px; border-radius: 7px; font-size: 0.72rem; margin-left: auto; }
+/* ── CARD HEADER (avatar + name + info) ── */
+.card-head {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 14px 11px;
+  border-bottom: 1px solid var(--border);
+  background: #fafafa;
+}
+.av { width: 54px; height: 54px; border-radius: 12px; flex-shrink: 0; overflow: hidden; }
+.av img { width: 100%; height: 100%; object-fit: cover; border: 2px solid #c7d2fe; border-radius: 12px; display: block; }
+.av-fb { width: 54px; height: 54px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.3rem; color: #fff; }
 
-  /* ── States ── */
-  .msg { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
-  .spinner { width: 36px; height: 36px; border: 3.5px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 14px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .msg h3 { font-family: 'Baloo 2', cursive; font-size: 1.1rem; margin-bottom: 5px; color: var(--text); }
-  .msg.err h3 { color: #dc2626; }
-  .rbtn { margin-top: 14px; padding: 9px 20px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-family: 'Baloo 2', cursive; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+.hd { flex: 1; min-width: 0; }
+.hd-name { font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+.hd-reg  { font-size: 0.7rem; color: var(--sub); margin-top: 2px; font-weight: 700; }
+.hd-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+.tag { padding: 2px 8px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; }
+.tg-cls  { background: #e0e7ff; color: #3730a3; }
+.tg-male { background: #dbeafe; color: #1d4ed8; }
+.tg-fem  { background: #fce7f3; color: #be185d; }
+
+/* ── CARD BODY ── */
+.card-body { padding: 10px 14px 12px; display: grid; grid-template-columns: 1fr 1fr; }
+.field { display: flex; gap: 7px; align-items: flex-start; padding: 5px 6px 5px 0; border-bottom: 1px solid #f3f4f6; }
+.field:nth-last-child(-n+2) { border-bottom: none; }
+.field.wide { grid-column: 1/-1; padding-right: 0; border-bottom: none; }
+.f-ico { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.f-ico svg { width: 11px; height: 11px; display: block; }
+.fi-blue   { background:#dbeafe; color:#1d4ed8; }
+.fi-purple { background:#ede9fe; color:#6d28d9; }
+.fi-green  { background:#d1fae5; color:#065f46; }
+.fi-teal   { background:#ccfbf1; color:#0f766e; }
+.fi-orange { background:#ffedd5; color:#c2410c; }
+.fi-pink   { background:#fce7f3; color:#be185d; }
+.f-lbl { font-size: 0.63rem; color: var(--sub); text-transform: uppercase; letter-spacing: .5px; font-weight: 800; line-height: 1; }
+.f-val { font-size: 0.83rem; color: var(--text); font-weight: 700; line-height: 1.35; word-break: break-word; margin-top: 2px; }
+
+/* ── CARD FOOTER ── */
+.card-foot { padding: 7px 14px 8px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--sub); background: #f9fafb; }
+.card-foot svg { width: 11px; height: 11px; flex-shrink: 0; }
+.tch-tag { margin-left: auto; background: #e0e7ff; color: #3730a3; font-weight: 800; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; }
+
+/* ── STATES ── */
+.msg { text-align: center; padding: 60px 20px; color: var(--sub); grid-column: 1/-1; }
+.spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .75s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.msg h3 { font-family: 'Baloo 2', cursive; font-size: 1.1rem; color: var(--text); margin-bottom: 4px; }
+.msg.err h3 { color: #dc2626; }
+.rbtn { margin-top: 12px; padding: 8px 18px; background: var(--primary); color: #fff; border: none; border-radius: 9px; font-family: 'Baloo 2', cursive; font-weight: 700; cursor: pointer; font-size: 0.88rem; }
 </style>
 </head>
 <body>
 
 <header>
   <h1>📚 Student Registry</h1>
-  <p id="hcount">Loading students…</p>
+  <p id="hcount">Loading…</p>
 </header>
 
 <div class="controls" id="controls" style="display:none">
   <div class="search-wrap">
-    <svg class="s-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Search name, reg number, father name…">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Search name, reg, father, address…">
   </div>
   <div class="filters">
     <select id="fcls"><option value="">All Classes</option></select>
@@ -138,14 +177,14 @@
 </div>
 
 <div class="grid" id="grid">
-  <div class="msg"><div class="spinner"></div><h3>Loading students…</h3><p>Fetching from Google Sheets</p></div>
+  <div class="msg"><div class="spinner"></div><h3>Loading students…</h3><p>Connecting to Google Sheets</p></div>
 </div>
 
 <script>
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-qRlifX5Kc8beFA8SxnxIwluPMoVmqHtNXVLSefcGyySdvvgVFXnEnsGwqzpcs8PS07jC7ZMQcZj/pub?output=csv";
-let ALL = [], listening = false;
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-qRlifX5Kc8beFA8SxnxIwluPMoVmqHtNXVLSefcGyySdvvgVFXnEnsGwqzpcs8PS07jC7ZMQcZj/pub?output=csv";
+let ALL = [], bound = false;
 
-/* ── CSV parser ── */
+/* ── CSV ── */
 function parseCSV(raw) {
   const rows = [];
   for (const line of raw.split(/\r?\n/)) {
@@ -153,7 +192,7 @@ function parseCSV(raw) {
     const row = []; let cur = '', q = false;
     for (let i = 0; i < line.length; i++) {
       const c = line[i];
-      if (c === '"') q = !q;
+      if (c === '"') { q = !q; }
       else if (c === ',' && !q) { row.push(cur.trim()); cur = ''; }
       else cur += c;
     }
@@ -165,145 +204,147 @@ function parseCSV(raw) {
 
 function toS(r) {
   const v = i => (r[i] || '').trim();
-  return { ts:v(0), img:v(2), reg:v(3), name:v(4), bform:v(5), adm:v(6), dob:v(7), cls:v(8), gen:v(9), dad:v(10), cnic:v(11), addr:v(13), ph:v(14), tch:v(15), status:v(16) };
+  return {
+    ts: v(0), img: v(2), reg: v(3), name: v(4), bform: v(5),
+    adm: v(6), dob: v(7), cls: v(8), gen: v(9),
+    dad: v(10), cnic: v(11), addr: v(13), ph: v(14),
+    tch: v(15), status: v(16)
+  };
 }
 
-/* ── Extract Google Drive file ID from any Drive URL format ── */
-function driveId(url) {
+/* ── Drive image ── */
+function driveImg(url) {
   if (!url) return null;
-  // formats: /open?id=XXX  /file/d/XXX  /d/XXX  ?id=XXX
-  const patterns = [
-    /[?&]id=([a-zA-Z0-9_-]{10,})/,
-    /\/file\/d\/([a-zA-Z0-9_-]{10,})/,
-    /\/d\/([a-zA-Z0-9_-]{10,})/,
-  ];
-  for (const p of patterns) {
-    const m = url.match(p);
-    if (m) return m[1];
-  }
-  return null;
+  const m = url.match(/[?&]id=([a-zA-Z0-9_-]{10,})/) ||
+            url.match(/\/file\/d\/([a-zA-Z0-9_-]{10,})/) ||
+            url.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200` : null;
 }
 
-/* Try multiple Google Drive image URL formats */
-function driveImgUrl(url) {
-  const id = driveId(url);
-  if (!id) return null;
-  // Use thumbnail API — most reliable for public Drive files
-  return `https://drive.google.com/thumbnail?id=${id}&sz=w200`;
+/* ── Avatar colour ── */
+const COLS = ["#4f46e5","#db2777","#7c3aed","#0891b2","#d97706","#059669","#dc2626","#0284c7"];
+function acol(n) { let h=0; for(const c of (n||'?')) h=(h*31+c.charCodeAt(0))&0xffffff; return COLS[Math.abs(h)%8]; }
+function ini(n)  { const p=(n||'').trim().split(/\s+/); return (p[0]?.[0]||'')+(p[1]?.[0]||''); }
+
+/* ── Status — ALWAYS returns something, default = Pending ── */
+function getStatus(raw) {
+  const s = (raw || '').toLowerCase().trim();
+  // If blank → Pending
+  if (!s) return { key: 'pending', label: 'Pending', icon: '⏳' };
+
+  if (s.includes('admit') || s.includes('confirm') || s.includes('enrol') || s.includes('active'))
+    return { key: 'admitted',   label: 'Admitted',   icon: '✅' };
+  if (s.includes('wait'))
+    return { key: 'waitlist',   label: 'Waitlist',   icon: '⌛' };
+  if (s.includes('reject') || s.includes('declin') || s.includes('denied'))
+    return { key: 'rejected',   label: 'Rejected',   icon: '❌' };
+  if (s.includes('incomplet') || s.includes('missing') || s.includes('document'))
+    return { key: 'incomplete', label: 'Incomplete', icon: '⚠️' };
+  if (s.includes('pending') || s.includes('review') || s.includes('process'))
+    return { key: 'pending',    label: raw,           icon: '⏳' };
+
+  // anything else — use the raw value but style as pending
+  return { key: 'pending', label: raw, icon: '⏳' };
 }
 
-/* ── Avatar colours ── */
-const AVCOLS = ["#4361ee","#f72585","#7209b7","#4cc9f0","#f77f00","#2ec4b6","#e63946","#06d6a0"];
-function acolor(n) { let h=0; for(const c of (n||'X')) h=(h*31+c.charCodeAt(0))&0xffffff; return AVCOLS[Math.abs(h)%8]; }
-function ini(n) { const p=(n||'').trim().split(/\s+/); return (p[0]?.[0]||'')+(p[1]?.[0]||''); }
-
-/* ── SVG icon helper — always explicit px size ── */
-function ico(d) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+/* ── SVG icon ── */
+function svg(path) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
 }
-const I = {
-  p:  ico('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
-  c:  ico('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),
-  ph: ico('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.13.7.31 1.37.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c1.44.39 2.11.57 2.81.7A2 2 0 0 1 22 16.92z"/>'),
-  a:  ico('<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'),
-  id: ico('<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>'),
+const IC = {
+  person: svg('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
+  cal:    svg('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),
+  phone:  svg('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.13.7.31 1.37.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c1.44.39 2.11.57 2.81.7A2 2 0 0 1 22 16.92z"/>'),
+  home:   svg('<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'),
+  card:   svg('<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>'),
+  clock:  svg('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'),
 };
 
-/* ── Status config ── */
-function statusInfo(raw) {
-  const s = (raw || '').toLowerCase().trim();
-  if (!s)                                                                        return { key:'pending',    label:'Pending',    emoji:'⏳' };
-  if (s.includes('admit') || s.includes('confirm') || s.includes('active') || s.includes('enrol'))
-                                                                                 return { key:'admitted',   label:raw,          emoji:'✅' };
-  if (s.includes('pending') || s.includes('review') || s.includes('process'))   return { key:'pending',    label:raw,          emoji:'⏳' };
-  if (s.includes('wait'))                                                        return { key:'waitlist',   label:raw,          emoji:'⌛' };
-  if (s.includes('reject') || s.includes('den') || s.includes('declin'))        return { key:'rejected',   label:raw,          emoji:'❌' };
-  if (s.includes('incomplet') || s.includes('missing') || s.includes('doc'))    return { key:'incomplete', label:raw,          emoji:'⚠️' };
-  return { key:'pending', label:raw, emoji:'⏳' };
-}
+/* ── Build card ── */
+function buildCard(s, idx) {
+  const st  = getStatus(s.status);   // ← always has a value
+  const col = acol(s.name);
+  const img = driveImg(s.img);
 
-/* ── Build one card ── */
-function card(s, idx) {
-  const col = acolor(s.name);
-  const imgUrl = driveImgUrl(s.img);
-  const si = statusInfo(s.status);
-
-  /* Avatar — img with fallback to initials */
-  let av;
-  if (imgUrl) {
-    av = `<div class="av-wrap">
-      <img class="av-img" src="${imgUrl}"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="">
-      <div class="av-txt" style="background:${col};display:none">${ini(s.name)}</div>
-    </div>`;
-  } else {
-    av = `<div class="av-wrap"><div class="av-txt" style="background:${col}">${ini(s.name)}</div></div>`;
-  }
-
-  const gb = s.gen ? `<span class="badge ${s.gen==='Male'?'bm':'bf'}">${s.gen}</span>` : '';
-  const cb = s.cls ? `<span class="badge bc">Class ${s.cls}</span>` : '';
-
-  /* Status pill — inline next to name */
-  const pill = `<span class="status-pill sp-${si.key}"><span class="dot"></span>${si.emoji} ${si.label}</span>`;
-
-  const row = (ic, cl, lb, vl, full=false) => vl
-    ? `<div class="irow${full?' full':''}">
-         <div class="iico ${cl}">${ic}</div>
-         <div><div class="ilbl">${lb}</div><div class="ival">${vl}</div></div>
+  /* avatar */
+  const avatar = img
+    ? `<div class="av">
+         <img src="${img}" alt="${s.name}"
+           onerror="this.parentElement.innerHTML='<div class=av-fb style=background:${col}>${ini(s.name)}</div>'">
        </div>`
-    : '';
+    : `<div class="av-fb" style="background:${col}">${ini(s.name)}</div>`;
 
-  return `<div class="card" style="animation-delay:${idx*.04}s">
+  const genCls = s.gen === 'Male' ? 'tg-male' : s.gen === 'Female' ? 'tg-fem' : '';
 
-    <div class="card-top top-${si.key}"></div>
+  /* info field helper */
+  const f = (ico, cls, lbl, val, wide=false) => val
+    ? `<div class="field${wide?' wide':''}">
+         <div class="f-ico ${cls}">${ico}</div>
+         <div><div class="f-lbl">${lbl}</div><div class="f-val">${val}</div></div>
+       </div>` : '';
 
-    <div class="card-header">
-      ${av}
-      <div class="hinfo">
-        <div class="name-row">
-          <span class="sname">${s.name || '—'}</span>
-          ${pill}
-        </div>
-        <div class="rnum">Reg# ${s.reg || '—'} &nbsp;·&nbsp; ${s.bform || '—'}</div>
-        <div class="badges">${cb}${gb}</div>
+  return `
+<div class="card" style="animation-delay:${idx*.04}s">
+
+  <!-- Thin colour accent line at very top -->
+  <div class="accent ac-${st.key}"></div>
+
+  <!-- STATUS BANNER — wide coloured stripe, clearly visible -->
+  <div class="status-banner sb-${st.key}">
+    <div class="s-dot"></div>
+    <span class="s-label">${st.icon} Admission Status: <strong>${st.label}</strong></span>
+  </div>
+
+  <!-- Name / avatar header -->
+  <div class="card-head">
+    ${avatar}
+    <div class="hd">
+      <div class="hd-name">${s.name || '—'}</div>
+      <div class="hd-reg">Reg# ${s.reg || '—'} &nbsp;·&nbsp; ${s.bform || '—'}</div>
+      <div class="hd-tags">
+        ${s.cls ? `<span class="tag tg-cls">Class ${s.cls}</span>` : ''}
+        ${s.gen && genCls ? `<span class="tag ${genCls}">${s.gen}</span>` : ''}
       </div>
     </div>
+  </div>
 
-    <div class="card-body">
-      ${row(I.p,  'ib', 'Father',         s.dad)}
-      ${row(I.id, 'ip', 'Father CNIC',    s.cnic)}
-      ${row(I.c,  'ig', 'Date of Birth',  s.dob)}
-      ${row(I.c,  'it', 'Admission Date', s.adm)}
-      ${row(I.ph, 'io', 'Phone',          s.ph)}
-      ${row(I.a,  'ik', 'Address',        s.addr, true)}
-    </div>
+  <!-- Info grid -->
+  <div class="card-body">
+    ${f(IC.person,'fi-blue',  'Father',        s.dad)}
+    ${f(IC.card,  'fi-purple','Father CNIC',   s.cnic)}
+    ${f(IC.cal,   'fi-green', 'Date of Birth', s.dob)}
+    ${f(IC.cal,   'fi-teal',  'Admission Date',s.adm)}
+    ${f(IC.phone, 'fi-orange','Phone',         s.ph)}
+    ${f(IC.home,  'fi-pink',  'Address',       s.addr, true)}
+  </div>
 
-    <div class="card-footer">
-      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <span>${s.ts || ''}</span>
-      ${s.tch ? `<span class="ttag">👩‍🏫 ${s.tch}</span>` : ''}
-    </div>
+  <!-- Footer: timestamp + teacher -->
+  <div class="card-foot">
+    ${IC.clock} <span>${s.ts || ''}</span>
+    ${s.tch ? `<span class="tch-tag">👩‍🏫 ${s.tch}</span>` : ''}
+  </div>
 
-  </div>`;
+</div>`;
 }
 
-/* ── Filters ── */
-function fillFilters(students) {
-  const cls = [...new Set(students.map(s=>s.cls).filter(Boolean))].sort();
-  const tch = [...new Set(students.map(s=>s.tch).filter(Boolean))].sort();
-  const sts = [...new Set(students.map(s=>statusInfo(s.status).label))].sort();
+/* ── Fill filter dropdowns ── */
+function fillFilters(arr) {
+  const uq = (fn) => [...new Set(arr.map(fn).filter(Boolean))].sort();
 
   const cf = document.getElementById('fcls');
   cf.innerHTML = '<option value="">All Classes</option>';
-  cls.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=`Class ${c}`; cf.appendChild(o); });
+  uq(s=>s.cls).forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=`Class ${c}`; cf.appendChild(o); });
 
   const tf = document.getElementById('ftch');
   tf.innerHTML = '<option value="">All Teachers</option>';
-  tch.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; tf.appendChild(o); });
+  uq(s=>s.tch).forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; tf.appendChild(o); });
 
+  // Status filter — use resolved labels (so blank → "Pending" appears)
   const sf = document.getElementById('fsts');
   sf.innerHTML = '<option value="">All Statuses</option>';
-  sts.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; sf.appendChild(o); });
+  [...new Set(arr.map(s=>getStatus(s.status).label))].sort().forEach(v => {
+    const o=document.createElement('option'); o.value=v; o.textContent=v; sf.appendChild(o);
+  });
 }
 
 /* ── Render ── */
@@ -315,73 +356,69 @@ function render() {
   const st = document.getElementById('fsts').value;
 
   const f = ALL.filter(s => {
-    if (q  && ![s.name,s.reg,s.bform,s.dad,s.addr,s.ph,s.tch,s.status].join(' ').toLowerCase().includes(q)) return false;
+    const resolved = getStatus(s.status).label;
+    if (q  && ![s.name,s.reg,s.bform,s.dad,s.addr,s.ph,s.tch,resolved].join(' ').toLowerCase().includes(q)) return false;
     if (cl && s.cls !== cl) return false;
     if (gn && s.gen !== gn) return false;
     if (tc && s.tch !== tc) return false;
-    if (st && statusInfo(s.status).label !== st) return false;
+    if (st && resolved    !== st) return false;
     return true;
   });
 
-  const g = document.getElementById('grid');
-  g.innerHTML = f.length
-    ? f.map((s,i) => card(s,i)).join('')
+  document.getElementById('grid').innerHTML = f.length
+    ? f.map((s,i)=>buildCard(s,i)).join('')
     : `<div class="msg"><h3>No students found</h3><p>Try adjusting your filters.</p></div>`;
 
+  const adm = f.filter(s=>getStatus(s.status).key==='admitted').length;
+  const pen = f.filter(s=>getStatus(s.status).key==='pending').length;
   const m   = f.filter(s=>s.gen==='Male').length;
   const fe  = f.filter(s=>s.gen==='Female').length;
-  const adm = f.filter(s=>statusInfo(s.status).key==='admitted').length;
-  const pen = f.filter(s=>statusInfo(s.status).key==='pending').length;
 
   document.getElementById('sbar').innerHTML = `
-    <div class="stat-chip"><span>${f.length}</span>Total</div>
-    <div class="stat-chip" style="color:#15803d"><span style="color:#15803d">${adm}</span>Admitted</div>
-    <div class="stat-chip" style="color:#a16207"><span style="color:#a16207">${pen}</span>Pending</div>
-    <div class="stat-chip"><span>${m}</span>Male</div>
-    <div class="stat-chip"><span>${fe}</span>Female</div>
-    <div class="stat-chip"><span>${[...new Set(f.map(s=>s.cls).filter(Boolean))].length}</span>Classes</div>`;
+    <div class="chip"><b>${f.length}</b> Total</div>
+    <div class="chip" style="background:#d1fae5;color:#065f46;border-color:#a7f3d0"><b>${adm}</b> Admitted</div>
+    <div class="chip" style="background:#fef3c7;color:#92400e;border-color:#fde68a"><b>${pen}</b> Pending</div>
+    <div class="chip"><b>${m}</b> Male</div>
+    <div class="chip"><b>${fe}</b> Female</div>
+    <div class="chip"><b>${[...new Set(f.map(s=>s.cls).filter(Boolean))].length}</b> Classes</div>`;
 
   document.getElementById('hcount').textContent = `${f.length} student${f.length!==1?'s':''} registered`;
 }
 
-/* ── Fetch from Google Sheets via proxies ── */
+/* ── Load data ── */
 async function loadSheet() {
   const proxies = [
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(SHEET_CSV)}`,
-    `https://corsproxy.io/?url=${encodeURIComponent(SHEET_CSV)}`,
-    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(SHEET_CSV)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`,
+    `https://corsproxy.io/?url=${encodeURIComponent(CSV_URL)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(CSV_URL)}`,
   ];
 
-  let csvText = null;
-  for (const proxy of proxies) {
+  let csv = null;
+  for (const p of proxies) {
     try {
       const ctrl = new AbortController();
-      const tid  = setTimeout(() => ctrl.abort(), 9000);
-      const res  = await fetch(proxy, { signal: ctrl.signal });
-      clearTimeout(tid);
-      if (res.ok) {
-        const t = await res.text();
-        if (t && t.length > 30) { csvText = t; break; }
-      }
-    } catch(e) { /* try next */ }
+      const t = setTimeout(()=>ctrl.abort(), 9000);
+      const res = await fetch(p, {signal: ctrl.signal});
+      clearTimeout(t);
+      if (res.ok) { const txt = await res.text(); if (txt && txt.length > 30) { csv = txt; break; } }
+    } catch(e) {}
   }
 
-  if (!csvText) {
+  if (!csv) {
     document.getElementById('grid').innerHTML = `<div class="msg err">
-      <h3>⚠️ Could not load data</h3>
-      <p style="font-size:.85rem;color:#b91c1c;margin-top:6px">All connections failed.</p>
-      <p style="font-size:.82rem;color:var(--muted);margin-top:8px">Check your internet and try again.</p>
+      <h3>⚠️ Could not load</h3>
+      <p style="margin-top:6px;font-size:.83rem;color:#b91c1c">All connections failed.</p>
       <button class="rbtn" onclick="loadSheet()">🔄 Retry</button>
     </div>`;
     document.getElementById('hcount').textContent = 'Connection failed';
     return;
   }
 
-  const rows = parseCSV(csvText);
-  ALL = rows.slice(1).map(toS).filter(s => s.name.length > 0);
+  const rows = parseCSV(csv);
+  ALL = rows.slice(1).map(toS).filter(s => s.name);
 
   if (!ALL.length) {
-    document.getElementById('grid').innerHTML = `<div class="msg err"><h3>⚠️ No records</h3><p>Sheet loaded but no student data found.</p></div>`;
+    document.getElementById('grid').innerHTML = `<div class="msg err"><h3>No records found</h3></div>`;
     return;
   }
 
@@ -389,8 +426,8 @@ async function loadSheet() {
   document.getElementById('controls').style.display = 'block';
   render();
 
-  if (!listening) {
-    listening = true;
+  if (!bound) {
+    bound = true;
     ['search','fcls','fgen','ftch','fsts'].forEach(id => {
       document.getElementById(id).addEventListener('input', render);
       document.getElementById(id).addEventListener('change', render);
