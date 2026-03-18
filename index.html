@@ -175,6 +175,7 @@ function detectCols(headers) {
     cnic:   find('guardian cnic', 'father / guardian', 'cnic'),
     addr:   find('address'),
     ph:     find('phone'),
+    kids:   find('no of children', 'children', 'child'),
     tch:    find('teacher'),
     status: find('admission status', 'status'),
   };
@@ -197,17 +198,23 @@ function toS(r, cols) {
     addr:   v(cols.addr),
     ph:     v(cols.ph),
     tch:    v(cols.tch),
+    kids:   v(cols.kids),
     status: v(cols.status),
   };
 }
 
 /* ── Drive image ── */
-function driveImg(url) {
+function driveId(url) {
   if (!url) return null;
   const m = url.match(/[?&]id=([a-zA-Z0-9_-]{10,})/) ||
             url.match(/\/file\/d\/([a-zA-Z0-9_-]{10,})/) ||
             url.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
-  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200` : null;
+  return m ? m[1] : null;
+}
+function driveImg(url) {
+  const id = driveId(url);
+  if (!id) return null;
+  return id; // return just the ID; avatar builder handles URL attempts
 }
 
 /* ── Avatar ── */
@@ -247,12 +254,24 @@ function buildCard(s, idx) {
   const col = acol(s.name);
   const img = driveImg(s.img);
 
+  // Try 3 Drive URL formats in sequence via onerror chaining
+  const fbHtml = `<div class='av-fb' style='background:${col}'>${ini(s.name)}</div>`;
   const avatar = img
     ? `<div class="av-img-wrap">
-         <img src="${img}" alt="${s.name}"
-           onerror="this.parentElement.outerHTML='<div class=av-fb style=background:${col}>${ini(s.name)}</div>'">
+         <img
+           src="https://lh3.googleusercontent.com/d/${img}=w200"
+           data-src2="https://drive.google.com/thumbnail?id=${img}&sz=w200"
+           data-src3="https://drive.google.com/uc?export=view&id=${img}"
+           alt="${s.name}"
+           onerror="
+             var s2=this.getAttribute('data-src2');
+             var s3=this.getAttribute('data-src3');
+             if(s2&&this.src!==s2){this.src=s2;}
+             else if(s3&&this.src!==s3){this.src=s3;}
+             else{this.parentElement.outerHTML=\`${fbHtml}\`;}
+           ">
        </div>`
-    : `<div class="av-fb" style="background:${col}">${ini(s.name)}</div>`;
+    : fbHtml;
 
   const genCls = s.gen === 'Male' ? 'tg-male' : s.gen === 'Female' ? 'tg-fem' : '';
 
@@ -291,6 +310,7 @@ function buildCard(s, idx) {
     ${f(IC.cal,   'fi-green', 'Date of Birth', s.dob)}
     ${f(IC.cal,   'fi-teal',  'Admission Date',s.adm)}
     ${f(IC.phone, 'fi-orange','Phone',         s.ph)}
+    ${f(IC.person,'fi-teal',  'No. of Children', s.kids)}
     ${f(IC.home,  'fi-pink',  'Address',       s.addr, true)}
   </div>
 
