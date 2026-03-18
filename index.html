@@ -7,97 +7,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg: #eef2ff;
-  --card: #ffffff;
-  --primary: #4f46e5;
-  --text: #111827;
-  --sub: #6b7280;
-  --border: #e5e7eb;
-  --radius: 14px;
-  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(79,70,229,.08);
+  --bg: #eef2ff; --card: #ffffff; --primary: #4f46e5;
+  --text: #111827; --sub: #6b7280; --border: #e5e7eb;
+  --radius: 14px; --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(79,70,229,.08);
 }
-
 body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; padding-bottom: 50px; color: var(--text); }
 
-/* ── HEADER ── */
-header {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  padding: 18px 20px 14px; text-align: center;
-  position: sticky; top: 0; z-index: 200;
-  box-shadow: 0 3px 20px rgba(79,70,229,.35);
-}
+header { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 18px 20px 14px; text-align: center; position: sticky; top: 0; z-index: 200; box-shadow: 0 3px 20px rgba(79,70,229,.35); }
 header h1 { font-family: 'Baloo 2', cursive; font-size: 1.5rem; font-weight: 800; color: #fff; }
-#hcount   { color: rgba(255,255,255,.65); font-size: 0.78rem; margin-top: 2px; }
+#hcount { color: rgba(255,255,255,.65); font-size: 0.78rem; margin-top: 2px; }
 
-/* ── CONTROLS ── */
-.controls {
-  padding: 10px 14px 0;
-  position: sticky; top: 68px; z-index: 100;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 8px;
-}
+.controls { padding: 10px 14px 8px; position: sticky; top: 68px; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
 .search-wrap { position: relative; margin-bottom: 7px; }
 .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--sub); }
-#search {
-  width: 100%; padding: 10px 12px 10px 38px;
-  border: 1.5px solid var(--border); border-radius: 10px;
-  font-family: 'Nunito', sans-serif; font-size: 0.9rem;
-  background: var(--card); color: var(--text); outline: none;
-}
+#search { width: 100%; padding: 10px 12px 10px 38px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; background: var(--card); color: var(--text); outline: none; }
 #search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
 .filters { display: flex; gap: 6px; flex-wrap: wrap; }
-select {
-  flex: 1; min-width: 115px;
-  padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 9px;
-  font-family: 'Nunito', sans-serif; font-size: 0.82rem;
-  background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 9px center;
-  color: var(--text); outline: none; cursor: pointer; appearance: none;
-}
+select { flex: 1; min-width: 115px; padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 9px; font-family: 'Nunito', sans-serif; font-size: 0.82rem; background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 9px center; color: var(--text); outline: none; cursor: pointer; appearance: none; }
 select:focus { border-color: var(--primary); }
-
 .stats-bar { display: flex; gap: 6px; padding: 8px 0 0; overflow-x: auto; scrollbar-width: none; }
 .stats-bar::-webkit-scrollbar { display: none; }
 .chip { flex-shrink: 0; padding: 4px 11px; border-radius: 20px; font-size: 0.74rem; font-weight: 800; background: var(--card); border: 1.5px solid var(--border); color: var(--sub); white-space: nowrap; }
 .chip b { color: var(--primary); }
 
-/* ── GRID ── */
 .grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 14px; }
 @media(min-width:580px)  { .grid { grid-template-columns: repeat(2,1fr); } }
 @media(min-width:960px)  { .grid { grid-template-columns: repeat(3,1fr); } }
 
-/* ── CARD ── */
-.card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); border: 1.5px solid var(--border);
-  overflow: hidden; animation: up .3s ease both;
-  transition: transform .15s, box-shadow .15s;
-}
+/* Card */
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); border: 1.5px solid var(--border); overflow: hidden; animation: up .3s ease both; transition: transform .15s, box-shadow .15s; }
 .card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(79,70,229,.15); }
 @keyframes up { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
-/* ── STATUS BANNER — FULL WIDTH TOP OF CARD ── */
-.status-banner {
-  width: 100%;
-  padding: 7px 14px;
-  display: flex; align-items: center; gap: 7px;
-  font-size: 0.78rem; font-weight: 800;
-  letter-spacing: .3px; text-transform: uppercase;
-  border-bottom: 1px solid rgba(0,0,0,.06);
-}
-.status-banner .s-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.status-banner .s-label { flex: 1; }
-
-/* Status colour themes */
-.sb-admitted   { background: #d1fae5; color: #065f46; } .sb-admitted   .s-dot { background:#059669; }
-.sb-pending    { background: #fef3c7; color: #92400e; } .sb-pending    .s-dot { background:#d97706; }
-.sb-waitlist   { background: #ffedd5; color: #9a3412; } .sb-waitlist   .s-dot { background:#ea580c; }
-.sb-rejected   { background: #fee2e2; color: #991b1b; } .sb-rejected   .s-dot { background:#dc2626; }
-.sb-incomplete { background: #ede9fe; color: #5b21b6; } .sb-incomplete .s-dot { background:#7c3aed; }
-
-/* ── TOP ACCENT LINE (thin coloured bar) ── */
+/* Accent line */
 .accent { height: 4px; }
 .ac-admitted   { background: linear-gradient(90deg,#059669,#34d399); }
 .ac-pending    { background: linear-gradient(90deg,#d97706,#fbbf24); }
@@ -105,17 +48,23 @@ select:focus { border-color: var(--primary); }
 .ac-rejected   { background: linear-gradient(90deg,#dc2626,#f87171); }
 .ac-incomplete { background: linear-gradient(90deg,#7c3aed,#a78bfa); }
 
-/* ── CARD HEADER (avatar + name + info) ── */
-.card-head {
-  display: flex; gap: 12px; align-items: flex-start;
-  padding: 12px 14px 11px;
-  border-bottom: 1px solid var(--border);
-  background: #fafafa;
-}
-.av { width: 54px; height: 54px; border-radius: 12px; flex-shrink: 0; overflow: hidden; }
-.av img { width: 100%; height: 100%; object-fit: cover; border: 2px solid #c7d2fe; border-radius: 12px; display: block; }
-.av-fb { width: 54px; height: 54px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.3rem; color: #fff; }
+/* ── STATUS BANNER — immediately below accent, full width, very prominent ── */
+.status-banner { width: 100%; padding: 8px 14px; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 800; letter-spacing: .3px; border-bottom: 1.5px solid rgba(0,0,0,.07); }
+.status-banner .s-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.status-banner .s-text { font-size: 0.78rem; opacity: .75; font-weight: 700; margin-right: 2px; }
+.status-banner .s-val  { font-size: 0.82rem; font-weight: 800; }
 
+.sb-admitted   { background: #d1fae5; color: #065f46; } .sb-admitted   .s-dot { background: #059669; }
+.sb-pending    { background: #fef3c7; color: #92400e; } .sb-pending    .s-dot { background: #d97706; }
+.sb-waitlist   { background: #ffedd5; color: #9a3412; } .sb-waitlist   .s-dot { background: #ea580c; }
+.sb-rejected   { background: #fee2e2; color: #991b1b; } .sb-rejected   .s-dot { background: #dc2626; }
+.sb-incomplete { background: #ede9fe; color: #5b21b6; } .sb-incomplete .s-dot { background: #7c3aed; }
+
+/* Card head */
+.card-head { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px 11px; border-bottom: 1px solid var(--border); background: #fafafa; }
+.av-fb { width: 54px; height: 54px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.3rem; color: #fff; }
+.av-img-wrap { width: 54px; height: 54px; border-radius: 12px; flex-shrink: 0; overflow: hidden; border: 2px solid #c7d2fe; }
+.av-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .hd { flex: 1; min-width: 0; }
 .hd-name { font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
 .hd-reg  { font-size: 0.7rem; color: var(--sub); margin-top: 2px; font-weight: 700; }
@@ -125,7 +74,7 @@ select:focus { border-color: var(--primary); }
 .tg-male { background: #dbeafe; color: #1d4ed8; }
 .tg-fem  { background: #fce7f3; color: #be185d; }
 
-/* ── CARD BODY ── */
+/* Card body */
 .card-body { padding: 10px 14px 12px; display: grid; grid-template-columns: 1fr 1fr; }
 .field { display: flex; gap: 7px; align-items: flex-start; padding: 5px 6px 5px 0; border-bottom: 1px solid #f3f4f6; }
 .field:nth-last-child(-n+2) { border-bottom: none; }
@@ -141,12 +90,12 @@ select:focus { border-color: var(--primary); }
 .f-lbl { font-size: 0.63rem; color: var(--sub); text-transform: uppercase; letter-spacing: .5px; font-weight: 800; line-height: 1; }
 .f-val { font-size: 0.83rem; color: var(--text); font-weight: 700; line-height: 1.35; word-break: break-word; margin-top: 2px; }
 
-/* ── CARD FOOTER ── */
+/* Card footer */
 .card-foot { padding: 7px 14px 8px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--sub); background: #f9fafb; }
-.card-foot svg { width: 11px; height: 11px; flex-shrink: 0; }
+.card-foot svg { width: 11px; height: 11px; flex-shrink: 0; display: block; }
 .tch-tag { margin-left: auto; background: #e0e7ff; color: #3730a3; font-weight: 800; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; }
 
-/* ── STATES ── */
+/* States */
 .msg { text-align: center; padding: 60px 20px; color: var(--sub); grid-column: 1/-1; }
 .spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .75s linear infinite; margin: 0 auto 12px; }
 @keyframes spin { to { transform:rotate(360deg); } }
@@ -184,7 +133,7 @@ select:focus { border-color: var(--primary); }
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy-qRlifX5Kc8beFA8SxnxIwluPMoVmqHtNXVLSefcGyySdvvgVFXnEnsGwqzpcs8PS07jC7ZMQcZj/pub?output=csv";
 let ALL = [], bound = false;
 
-/* ── CSV ── */
+/* ── CSV parser ── */
 function parseCSV(raw) {
   const rows = [];
   for (const line of raw.split(/\r?\n/)) {
@@ -202,13 +151,53 @@ function parseCSV(raw) {
   return rows;
 }
 
-function toS(r) {
-  const v = i => (r[i] || '').trim();
+/* ── AUTO-DETECT column indices from header row ── */
+function detectCols(headers) {
+  const h = headers.map(x => x.toLowerCase().trim());
+  const find = (...keywords) => {
+    for (const kw of keywords) {
+      const i = h.findIndex(x => x.includes(kw));
+      if (i !== -1) return i;
+    }
+    return -1;
+  };
   return {
-    ts: v(0), img: v(2), reg: v(3), name: v(4), bform: v(5),
-    adm: v(6), dob: v(7), cls: v(8), gen: v(9),
-    dad: v(10), cnic: v(11), addr: v(13), ph: v(14),
-    tch: v(15), status: v(16)
+    ts:     find('timestamp'),
+    img:    find('image', 'photo', 'picture'),
+    reg:    find('registration number', 'reg'),
+    name:   find('name'),
+    bform:  find('b-form number', 'b-form', 'bform'),
+    adm:    find('admission date'),
+    dob:    find('date of birth', 'dob', 'birth'),
+    cls:    find('class'),
+    gen:    find('gender'),
+    dad:    find('father name', 'father'),
+    cnic:   find('guardian cnic', 'father / guardian', 'cnic'),
+    addr:   find('address'),
+    ph:     find('phone'),
+    tch:    find('teacher'),
+    status: find('admission status', 'status'),
+  };
+}
+
+function toS(r, cols) {
+  const v = i => (i >= 0 && r[i] !== undefined) ? r[i].trim() : '';
+  return {
+    ts:     v(cols.ts),
+    img:    v(cols.img),
+    reg:    v(cols.reg),
+    name:   v(cols.name),
+    bform:  v(cols.bform),
+    adm:    v(cols.adm),
+    dob:    v(cols.dob),
+    cls:    v(cols.cls),
+    gen:    v(cols.gen),
+    dad:    v(cols.dad),
+    cnic:   v(cols.cnic),
+    addr:   v(cols.addr),
+    ph:     v(cols.ph),
+    tch:    v(cols.tch),
+    status: v(cols.status),
   };
 }
 
@@ -221,33 +210,25 @@ function driveImg(url) {
   return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200` : null;
 }
 
-/* ── Avatar colour ── */
-const COLS = ["#4f46e5","#db2777","#7c3aed","#0891b2","#d97706","#059669","#dc2626","#0284c7"];
-function acol(n) { let h=0; for(const c of (n||'?')) h=(h*31+c.charCodeAt(0))&0xffffff; return COLS[Math.abs(h)%8]; }
-function ini(n)  { const p=(n||'').trim().split(/\s+/); return (p[0]?.[0]||'')+(p[1]?.[0]||''); }
+/* ── Avatar ── */
+const AVCOLS = ["#4f46e5","#db2777","#7c3aed","#0891b2","#d97706","#059669","#dc2626","#0284c7"];
+function acol(n) { let h=0; for(const c of (n||'?')) h=(h*31+c.charCodeAt(0))&0xffffff; return AVCOLS[Math.abs(h)%8]; }
+function ini(n) { const p=(n||'').trim().split(/\s+/); return (p[0]?.[0]||'')+(p[1]?.[0]||''); }
 
-/* ── Status — ALWAYS returns something, default = Pending ── */
+/* ── Status — blank always = Pending ── */
 function getStatus(raw) {
   const s = (raw || '').toLowerCase().trim();
-  // If blank → Pending
-  if (!s) return { key: 'pending', label: 'Pending', icon: '⏳' };
-
+  if (!s)                                                                              return { key:'pending',    label:'Pending',    icon:'⏳' };
   if (s.includes('admit') || s.includes('confirm') || s.includes('enrol') || s.includes('active'))
-    return { key: 'admitted',   label: 'Admitted',   icon: '✅' };
-  if (s.includes('wait'))
-    return { key: 'waitlist',   label: 'Waitlist',   icon: '⌛' };
-  if (s.includes('reject') || s.includes('declin') || s.includes('denied'))
-    return { key: 'rejected',   label: 'Rejected',   icon: '❌' };
-  if (s.includes('incomplet') || s.includes('missing') || s.includes('document'))
-    return { key: 'incomplete', label: 'Incomplete', icon: '⚠️' };
-  if (s.includes('pending') || s.includes('review') || s.includes('process'))
-    return { key: 'pending',    label: raw,           icon: '⏳' };
-
-  // anything else — use the raw value but style as pending
-  return { key: 'pending', label: raw, icon: '⏳' };
+                                                                                       return { key:'admitted',   label:raw,          icon:'✅' };
+  if (s.includes('wait'))                                                              return { key:'waitlist',   label:raw,          icon:'⌛' };
+  if (s.includes('reject') || s.includes('declin') || s.includes('denied'))           return { key:'rejected',   label:raw,          icon:'❌' };
+  if (s.includes('incomplet') || s.includes('missing') || s.includes('document'))     return { key:'incomplete', label:raw,          icon:'⚠️' };
+  if (s.includes('pending') || s.includes('review') || s.includes('process'))         return { key:'pending',    label:raw,          icon:'⏳' };
+  return { key:'pending', label:raw, icon:'⏳' };
 }
 
-/* ── SVG icon ── */
+/* ── SVG icons ── */
 function svg(path) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
 }
@@ -262,21 +243,19 @@ const IC = {
 
 /* ── Build card ── */
 function buildCard(s, idx) {
-  const st  = getStatus(s.status);   // ← always has a value
+  const st  = getStatus(s.status);
   const col = acol(s.name);
   const img = driveImg(s.img);
 
-  /* avatar */
   const avatar = img
-    ? `<div class="av">
+    ? `<div class="av-img-wrap">
          <img src="${img}" alt="${s.name}"
-           onerror="this.parentElement.innerHTML='<div class=av-fb style=background:${col}>${ini(s.name)}</div>'">
+           onerror="this.parentElement.outerHTML='<div class=av-fb style=background:${col}>${ini(s.name)}</div>'">
        </div>`
     : `<div class="av-fb" style="background:${col}">${ini(s.name)}</div>`;
 
   const genCls = s.gen === 'Male' ? 'tg-male' : s.gen === 'Female' ? 'tg-fem' : '';
 
-  /* info field helper */
   const f = (ico, cls, lbl, val, wide=false) => val
     ? `<div class="field${wide?' wide':''}">
          <div class="f-ico ${cls}">${ico}</div>
@@ -286,16 +265,14 @@ function buildCard(s, idx) {
   return `
 <div class="card" style="animation-delay:${idx*.04}s">
 
-  <!-- Thin colour accent line at very top -->
   <div class="accent ac-${st.key}"></div>
 
-  <!-- STATUS BANNER — wide coloured stripe, clearly visible -->
   <div class="status-banner sb-${st.key}">
     <div class="s-dot"></div>
-    <span class="s-label">${st.icon} Admission Status: <strong>${st.label}</strong></span>
+    <span class="s-text">ADMISSION STATUS</span>
+    <span class="s-val">${st.icon} ${st.label.toUpperCase()}</span>
   </div>
 
-  <!-- Name / avatar header -->
   <div class="card-head">
     ${avatar}
     <div class="hd">
@@ -308,7 +285,6 @@ function buildCard(s, idx) {
     </div>
   </div>
 
-  <!-- Info grid -->
   <div class="card-body">
     ${f(IC.person,'fi-blue',  'Father',        s.dad)}
     ${f(IC.card,  'fi-purple','Father CNIC',   s.cnic)}
@@ -318,7 +294,6 @@ function buildCard(s, idx) {
     ${f(IC.home,  'fi-pink',  'Address',       s.addr, true)}
   </div>
 
-  <!-- Footer: timestamp + teacher -->
   <div class="card-foot">
     ${IC.clock} <span>${s.ts || ''}</span>
     ${s.tch ? `<span class="tch-tag">👩‍🏫 ${s.tch}</span>` : ''}
@@ -327,19 +302,15 @@ function buildCard(s, idx) {
 </div>`;
 }
 
-/* ── Fill filter dropdowns ── */
+/* ── Fill filters ── */
 function fillFilters(arr) {
   const uq = (fn) => [...new Set(arr.map(fn).filter(Boolean))].sort();
-
   const cf = document.getElementById('fcls');
   cf.innerHTML = '<option value="">All Classes</option>';
   uq(s=>s.cls).forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=`Class ${c}`; cf.appendChild(o); });
-
   const tf = document.getElementById('ftch');
   tf.innerHTML = '<option value="">All Teachers</option>';
   uq(s=>s.tch).forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; tf.appendChild(o); });
-
-  // Status filter — use resolved labels (so blank → "Pending" appears)
   const sf = document.getElementById('fsts');
   sf.innerHTML = '<option value="">All Statuses</option>';
   [...new Set(arr.map(s=>getStatus(s.status).label))].sort().forEach(v => {
@@ -356,18 +327,18 @@ function render() {
   const st = document.getElementById('fsts').value;
 
   const f = ALL.filter(s => {
-    const resolved = getStatus(s.status).label;
-    if (q  && ![s.name,s.reg,s.bform,s.dad,s.addr,s.ph,s.tch,resolved].join(' ').toLowerCase().includes(q)) return false;
+    const sl = getStatus(s.status).label;
+    if (q  && ![s.name,s.reg,s.bform,s.dad,s.addr,s.ph,s.tch,sl].join(' ').toLowerCase().includes(q)) return false;
     if (cl && s.cls !== cl) return false;
     if (gn && s.gen !== gn) return false;
     if (tc && s.tch !== tc) return false;
-    if (st && resolved    !== st) return false;
+    if (st && sl    !== st) return false;
     return true;
   });
 
   document.getElementById('grid').innerHTML = f.length
     ? f.map((s,i)=>buildCard(s,i)).join('')
-    : `<div class="msg"><h3>No students found</h3><p>Try adjusting your filters.</p></div>`;
+    : `<div class="msg"><h3>No students found</h3><p>Try adjusting filters.</p></div>`;
 
   const adm = f.filter(s=>getStatus(s.status).key==='admitted').length;
   const pen = f.filter(s=>getStatus(s.status).key==='pending').length;
@@ -381,11 +352,10 @@ function render() {
     <div class="chip"><b>${m}</b> Male</div>
     <div class="chip"><b>${fe}</b> Female</div>
     <div class="chip"><b>${[...new Set(f.map(s=>s.cls).filter(Boolean))].length}</b> Classes</div>`;
-
   document.getElementById('hcount').textContent = `${f.length} student${f.length!==1?'s':''} registered`;
 }
 
-/* ── Load data ── */
+/* ── Load ── */
 async function loadSheet() {
   const proxies = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`,
@@ -405,17 +375,23 @@ async function loadSheet() {
   }
 
   if (!csv) {
-    document.getElementById('grid').innerHTML = `<div class="msg err">
-      <h3>⚠️ Could not load</h3>
-      <p style="margin-top:6px;font-size:.83rem;color:#b91c1c">All connections failed.</p>
-      <button class="rbtn" onclick="loadSheet()">🔄 Retry</button>
-    </div>`;
+    document.getElementById('grid').innerHTML = `<div class="msg err"><h3>⚠️ Could not load</h3><p style="margin-top:6px;font-size:.83rem;color:#b91c1c">All connections failed.</p><button class="rbtn" onclick="loadSheet()">🔄 Retry</button></div>`;
     document.getElementById('hcount').textContent = 'Connection failed';
     return;
   }
 
   const rows = parseCSV(csv);
-  ALL = rows.slice(1).map(toS).filter(s => s.name);
+  if (rows.length < 2) {
+    document.getElementById('grid').innerHTML = `<div class="msg err"><h3>Empty sheet</h3></div>`;
+    return;
+  }
+
+  // Auto-detect columns from header row
+  const cols = detectCols(rows[0]);
+  console.log('Detected columns:', cols);
+  console.log('Headers:', rows[0]);
+
+  ALL = rows.slice(1).map(r => toS(r, cols)).filter(s => s.name);
 
   if (!ALL.length) {
     document.getElementById('grid').innerHTML = `<div class="msg err"><h3>No records found</h3></div>`;
