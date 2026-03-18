@@ -3,242 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Registry</title>
+<title>Student Registry4</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f0f4ff;
-    --card-bg: #ffffff;
-    --primary: #4361ee;
-    --primary-light: #eef0fd;
-    --accent: #f72585;
-    --text: #1a1a2e;
-    --muted: #6b7280;
-    --border: #e2e8f0;
-    --shadow: 0 4px 20px rgba(67,97,238,0.10);
-    --radius: 18px;
+    --bg: #f0f4ff; --card-bg: #ffffff; --primary: #4361ee;
+    --primary-light: #eef0fd; --text: #1a1a2e; --muted: #6b7280;
+    --border: #e2e8f0; --shadow: 0 4px 20px rgba(67,97,238,0.10); --radius: 18px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px; }
 
-  /* ── Header ── */
-  header {
-    background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
-    padding: 22px 20px 18px;
-    text-align: center;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 4px 24px rgba(67,97,238,0.25);
-  }
+  header { background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%); padding: 22px 20px 18px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 24px rgba(67,97,238,0.25); }
   header h1 { font-family: 'Baloo 2', cursive; font-size: 1.6rem; font-weight: 800; color: #fff; }
   header p  { color: rgba(255,255,255,0.75); font-size: 0.82rem; margin-top: 2px; }
 
-  /* ── CSV Setup Banner ── */
-  #setup-banner {
-    background: #fffbeb;
-    border: 2px dashed #fbbf24;
-    border-radius: 14px;
-    margin: 14px 14px 0;
-    padding: 14px 16px;
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-  #setup-banner strong { color: #92400e; font-size: 0.9rem; }
-  #setup-banner ol { margin: 8px 0 10px 18px; color: #78350f; }
+  #setup-banner { background: #fffbeb; border: 2px dashed #fbbf24; border-radius: 14px; margin: 14px 14px 0; padding: 14px 16px; font-size: 0.85rem; line-height: 1.6; }
+  #setup-banner strong { color: #92400e; font-size: 0.9rem; display: block; margin-bottom: 6px; }
+  #setup-banner ol { margin: 0 0 10px 18px; color: #78350f; }
   #setup-banner ol li { margin-bottom: 3px; }
   #setup-banner code { background: #fef3c7; padding: 1px 5px; border-radius: 5px; font-size: 0.82rem; color: #92400e; }
   .url-row { display: flex; gap: 8px; margin-top: 8px; }
-  #csv-url-input {
-    flex: 1; padding: 10px 12px; border: 2px solid #fbbf24; border-radius: 10px;
-    font-family: 'Nunito', sans-serif; font-size: 0.85rem; outline: none; color: var(--text);
-  }
-  #csv-url-input:focus { border-color: var(--primary); }
-  #load-btn {
-    padding: 10px 18px; background: var(--primary); color: #fff; border: none;
-    border-radius: 10px; font-family: 'Baloo 2', cursive; font-weight: 700;
-    font-size: 0.9rem; cursor: pointer; white-space: nowrap; transition: background .2s;
-  }
+  #csv-input { flex: 1; padding: 10px 12px; border: 2px solid #fbbf24; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 0.85rem; outline: none; color: var(--text); }
+  #csv-input:focus { border-color: var(--primary); }
+  #load-btn { padding: 10px 18px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; }
   #load-btn:hover { background: #3251d4; }
+  #load-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
-  /* ── Controls ── */
-  .controls {
-    padding: 12px 14px 6px;
-    position: sticky; top: 80px; z-index: 90;
-    background: var(--bg);
-  }
+  .controls { padding: 12px 14px 6px; position: sticky; top: 80px; z-index: 90; background: var(--bg); }
   .search-wrap { position: relative; margin-bottom: 8px; }
   .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
-  #search {
-    width: 100%; padding: 12px 14px 12px 44px;
-    border: 2px solid var(--border); border-radius: 14px;
-    font-family: 'Nunito', sans-serif; font-size: 0.95rem;
-    background: var(--card-bg); color: var(--text); outline: none;
-    transition: border-color .2s, box-shadow .2s;
-  }
+  #search { width: 100%; padding: 12px 14px 12px 44px; border: 2px solid var(--border); border-radius: 14px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; background: var(--card-bg); color: var(--text); outline: none; }
   #search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67,97,238,0.12); }
   .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  select {
-    flex: 1; min-width: 130px; padding: 10px 34px 10px 12px;
-    border: 2px solid var(--border); border-radius: 12px;
-    font-family: 'Nunito', sans-serif; font-size: 0.88rem;
-    background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
-    color: var(--text); outline: none; cursor: pointer; appearance: none;
-    transition: border-color .2s;
-  }
+  select { flex: 1; min-width: 130px; padding: 10px 34px 10px 12px; border: 2px solid var(--border); border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 0.88rem; background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center; color: var(--text); outline: none; cursor: pointer; appearance: none; }
   select:focus { border-color: var(--primary); }
-
   .stats-bar { display: flex; gap: 8px; padding: 0 2px 8px; overflow-x: auto; scrollbar-width: none; }
   .stats-bar::-webkit-scrollbar { display: none; }
   .stat-chip { flex-shrink: 0; background: var(--card-bg); border: 2px solid var(--border); border-radius: 10px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
   .stat-chip span { color: var(--primary); font-size: 0.95rem; margin-right: 3px; }
 
-  /* ── Grid ── */
   .grid { padding: 4px 14px 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
   @media (min-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 960px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 
-  /* ── Card ── */
-  .card {
-    background: var(--card-bg); border-radius: var(--radius);
-    box-shadow: var(--shadow); border: 1.5px solid var(--border);
-    overflow: hidden; transition: transform .18s, box-shadow .18s;
-    animation: fadeUp .35s ease both;
-  }
+  .card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); border: 1.5px solid var(--border); overflow: hidden; transition: transform .18s, box-shadow .18s; animation: fadeUp .35s ease both; }
   .card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(67,97,238,0.16); }
   @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
 
-  .card-header {
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 15px 11px;
-    border-bottom: 1.5px solid var(--border);
-    background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
-  }
-  .avatar { width: 50px; height: 50px; border-radius: 13px; object-fit: cover; border: 2.5px solid var(--primary); flex-shrink: 0; }
-  .avatar-placeholder { width: 50px; height: 50px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.3rem; color: #fff; }
-  .header-info { flex: 1; min-width: 0; }
-  .student-name { font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .reg-num { font-size: 0.73rem; color: var(--muted); margin-top: 1px; }
+  .card-header { display: flex; align-items: center; gap: 12px; padding: 14px 15px 11px; border-bottom: 1.5px solid var(--border); background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%); }
+  .av-img { width: 50px; height: 50px; border-radius: 13px; object-fit: cover; border: 2.5px solid var(--primary); flex-shrink: 0; }
+  .av-txt { width: 50px; height: 50px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.3rem; color: #fff; }
+  .hinfo { flex: 1; min-width: 0; }
+  .sname { font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rnum  { font-size: 0.73rem; color: var(--muted); margin-top: 1px; }
   .badges { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
   .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.71rem; font-weight: 700; }
-  .badge-class  { background: #eef0fd; color: var(--primary); }
-  .badge-male   { background: #dbeafe; color: #1d4ed8; }
-  .badge-female { background: #fce7f3; color: #be185d; }
+  .bc { background:#eef0fd; color:var(--primary); }
+  .bm { background:#dbeafe; color:#1d4ed8; }
+  .bf { background:#fce7f3; color:#be185d; }
 
   .card-body { padding: 12px 15px 13px; }
-  .info-row { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 8px; }
-  .info-icon { width: 27px; height: 27px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .info-icon svg { width: 13px; height: 13px; }
-  .icon-bg-blue   { background:#dbeafe; color:#1d4ed8; }
-  .icon-bg-pink   { background:#fce7f3; color:#be185d; }
-  .icon-bg-green  { background:#dcfce7; color:#16a34a; }
-  .icon-bg-orange { background:#ffedd5; color:#ea580c; }
-  .icon-bg-purple { background:#f3e8ff; color:#7c3aed; }
-  .icon-bg-teal   { background:#ccfbf1; color:#0d9488; }
-  .info-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; font-weight: 700; line-height: 1.1; }
-  .info-value { font-size: 0.86rem; color: var(--text); font-weight: 600; line-height: 1.3; word-break: break-word; }
+  .irow { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 8px; }
+  .iico { width: 27px; height: 27px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .iico svg { width: 13px; height: 13px; }
+  .ib { background:#dbeafe; color:#1d4ed8; }
+  .ip { background:#f3e8ff; color:#7c3aed; }
+  .ig { background:#dcfce7; color:#16a34a; }
+  .io { background:#ffedd5; color:#ea580c; }
+  .ik { background:#fce7f3; color:#be185d; }
+  .it { background:#ccfbf1; color:#0d9488; }
+  .ilbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; font-weight: 700; line-height: 1.1; }
+  .ival { font-size: 0.86rem; color: var(--text); font-weight: 600; line-height: 1.3; word-break: break-word; }
 
-  .card-footer {
-    padding: 9px 15px 12px; border-top: 1.5px solid var(--border);
-    display: flex; align-items: center; gap: 7px;
-    font-size: 0.76rem; color: var(--muted); flex-wrap: wrap;
-  }
-  .teacher-tag { background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 2px 9px; border-radius: 8px; font-size: 0.76rem; margin-left: auto; }
+  .card-footer { padding: 9px 15px 12px; border-top: 1.5px solid var(--border); display: flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--muted); flex-wrap: wrap; }
+  .ttag { background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 2px 9px; border-radius: 8px; font-size: 0.76rem; margin-left: auto; }
 
-  /* ── States ── */
-  .empty, .loading-state, .error-state {
-    text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1 / -1;
-  }
-  .loading-state .spinner {
-    width: 40px; height: 40px; border: 4px solid var(--border);
-    border-top-color: var(--primary); border-radius: 50%;
-    animation: spin 0.8s linear infinite; margin: 0 auto 16px;
-  }
+  .msg { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
+  .spinner { width: 38px; height: 38px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 14px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .empty h3, .loading-state h3, .error-state h3 { font-family: 'Baloo 2', cursive; font-size: 1.15rem; margin-bottom: 5px; color: var(--text); }
-  .error-state { color: #dc2626; }
-  .error-state h3 { color: #dc2626; }
+  .msg h3 { font-family: 'Baloo 2', cursive; font-size: 1.1rem; margin-bottom: 5px; color: var(--text); }
+  .msg.err h3 { color: #dc2626; }
+  .rbtn { margin-top: 14px; padding: 9px 20px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-family: 'Baloo 2', cursive; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
 </style>
 </head>
 <body>
 
 <header>
   <h1>📚 Student Registry</h1>
-  <p id="header-count">Connect your Google Sheet to get started</p>
+  <p id="hcount">Connect your Google Sheet to get started</p>
 </header>
 
-<!-- Setup Banner -->
 <div id="setup-banner">
   <strong>🔗 Connect your Google Sheet</strong>
   <ol>
     <li>Open your Google Sheet → <strong>File → Share → Publish to web</strong></li>
-    <li>Under <em>Link</em>, select your sheet tab and choose <code>Comma-separated values (.csv)</code></li>
-    <li>Click <strong>Publish</strong>, then copy the URL</li>
-    <li>Paste it below and click <strong>Load</strong></li>
+    <li>Select your sheet tab, choose <code>Comma-separated values (.csv)</code></li>
+    <li>Click <strong>Publish</strong> → copy the URL given</li>
+    <li>Paste it below and tap <strong>Load</strong></li>
   </ol>
   <div class="url-row">
-    <input type="text" id="csv-url-input" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv">
-    <button id="load-btn" onclick="loadFromURL()">Load ▶</button>
+    <input type="text" id="csv-input" placeholder="https://docs.google.com/spreadsheets/d/…/pub?output=csv">
+    <button id="load-btn">Load ▶</button>
   </div>
 </div>
 
-<!-- Controls (hidden until data loads) -->
 <div class="controls" id="controls" style="display:none">
   <div class="search-wrap">
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Search by name, registration, father name…">
+    <input type="text" id="search" placeholder="Search name, reg, father name…">
   </div>
   <div class="filters">
-    <select id="filter-class"><option value="">All Classes</option></select>
-    <select id="filter-gender"><option value="">All Genders</option><option value="Male">Male</option><option value="Female">Female</option></select>
-    <select id="filter-teacher"><option value="">All Teachers</option></select>
+    <select id="fcls"><option value="">All Classes</option></select>
+    <select id="fgen"><option value="">All Genders</option><option value="Male">Male</option><option value="Female">Female</option></select>
+    <select id="ftch"><option value="">All Teachers</option></select>
   </div>
-  <div class="stats-bar" id="stats-bar"></div>
+  <div class="stats-bar" id="sbar"></div>
 </div>
 
-<div class="grid" id="grid">
-  <div class="loading-state" style="display:none" id="loading-el">
-    <div class="spinner"></div>
-    <h3>Loading students…</h3>
-    <p>Fetching data from Google Sheets</p>
-  </div>
-</div>
+<div class="grid" id="grid"></div>
 
 <script>
-// ── Column map — matches your Google Form sheet headers ──
-// Adjust index numbers if your sheet has different column order
-const COL = {
-  timestamp:    0,   // Timestamp
-  bform_dashes: 1,   // B-Form Number (With Dashes)
-  image:        2,   // Student Image (Google Drive link)
-  reg_no:       3,   // Registration Number
-  name:         4,   // Name
-  bform:        5,   // B-Form Number
-  admission:    6,   // Admission Date
-  dob:          7,   // Date Of Birth
-  cls:          8,   // Class
-  gender:       9,   // Gender
-  father:       10,  // Father Name
-  father_cnic:  11,  // Father / Guardian CNIC (With Dashes)
-  children:     12,  // No of Children
-  address:      13,  // Address
-  phone:        14,  // Phone No
-  teacher:      15,  // Teacher Name Who is Filling Form
-};
+const COL = { ts:0, img:2, reg:3, name:4, bform:5, adm:6, dob:7, cls:8, gen:9, dad:10, cnic:11, kids:12, addr:13, ph:14, tch:15 };
+let ALL = [], listening = false;
 
-let ALL_STUDENTS = [];
-
-// ── Parse CSV (handles quoted fields with commas) ──
-function parseCSV(text) {
+function parseCSV(raw) {
   const rows = [];
-  const lines = text.split(/\r?\n/);
-  for (const line of lines) {
+  for (const line of raw.split(/\r?\n/)) {
     if (!line.trim()) continue;
-    const row = [];
-    let cur = '', inQ = false;
+    const row = []; let cur = '', q = false;
     for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === ',' && !inQ) { row.push(cur.trim()); cur = ''; }
-      else { cur += ch; }
+      const c = line[i];
+      if (c === '"') q = !q;
+      else if (c === ',' && !q) { row.push(cur.trim()); cur = ''; }
+      else cur += c;
     }
     row.push(cur.trim());
     rows.push(row);
@@ -246,205 +144,150 @@ function parseCSV(text) {
   return rows;
 }
 
-function rowToStudent(row) {
-  const g = i => (row[i] || '').trim();
-  return {
-    timestamp:   g(COL.timestamp),
-    image:       g(COL.image),
-    reg_no:      g(COL.reg_no),
-    name:        g(COL.name),
-    bform:       g(COL.bform),
-    admission:   g(COL.admission),
-    dob:         g(COL.dob),
-    cls:         g(COL.cls),
-    gender:      g(COL.gender),
-    father:      g(COL.father),
-    father_cnic: g(COL.father_cnic),
-    children:    g(COL.children),
-    address:     g(COL.address),
-    phone:       g(COL.phone),
-    teacher:     g(COL.teacher),
-  };
+function toS(r) {
+  const v = i => (r[i]||'').trim();
+  return { ts:v(0), img:v(2), reg:v(3), name:v(4), bform:v(5), adm:v(6), dob:v(7), cls:v(8), gen:v(9), dad:v(10), cnic:v(11), addr:v(13), ph:v(14), tch:v(15) };
 }
 
-// ── Convert Google Drive share link → direct image ──
-function driveThumb(url) {
-  if (!url) return '';
-  const m = url.match(/[?&]id=([^&]+)/) || url.match(/\/d\/([^/]+)/);
+function thumb(u) {
+  if (!u) return '';
+  const m = u.match(/[?&]id=([^&]+)/) || u.match(/\/d\/([^/?]+)/);
   return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w120` : '';
 }
 
-// ── Helpers ──
-const COLORS = ["#4361ee","#f72585","#7209b7","#4cc9f0","#f77f00","#2ec4b6","#e63946","#06d6a0"];
-function colorFor(name) { let h=0; for (const c of name) h=(h*31+c.charCodeAt(0))&0xffffff; return COLORS[Math.abs(h)%COLORS.length]; }
-function initials(name) { const p=name.trim().split(/\s+/); return (p[0]?.[0]||'')+(p[1]?.[0]||''); }
-function ic(path) { return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`; }
+const AVCOLS = ["#4361ee","#f72585","#7209b7","#4cc9f0","#f77f00","#2ec4b6","#e63946","#06d6a0"];
+function acolor(n) { let h=0; for(const c of n) h=(h*31+c.charCodeAt(0))&0xffffff; return AVCOLS[Math.abs(h)%8]; }
+function ini(n) { const p=n.trim().split(/\s+/); return (p[0]?.[0]||'')+(p[1]?.[0]||''); }
+function ico(d) { return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`; }
 
-const ICONS = {
-  father:   ic('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
-  calendar: ic('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),
-  phone:    ic('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>'),
-  home:     ic('<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'),
-  id:       ic('<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>'),
-  teacher:  ic('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
-  clock:    ic('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'),
+const I = {
+  p: ico('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
+  c: ico('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),
+  h: ico('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.13.7.31 1.37.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c1.44.39 2.11.57 2.81.7A2 2 0 0 1 22 16.92z"/>'),
+  a: ico('<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'),
+  i: ico('<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>'),
+  t: ico('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'),
 };
 
-function buildCard(s, idx) {
-  const col = colorFor(s.name || 'X');
-  const thumb = driveThumb(s.image);
-  const avatarHtml = thumb
-    ? `<img class="avatar" src="${thumb}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="${s.name}">
-       <div class="avatar-placeholder" style="background:${col};display:none">${initials(s.name)}</div>`
-    : `<div class="avatar-placeholder" style="background:${col}">${initials(s.name)}</div>`;
-
-  const gBadge = s.gender ? `<span class="badge badge-${s.gender.toLowerCase()}">${s.gender}</span>` : '';
-  const cBadge = s.cls    ? `<span class="badge badge-class">Class ${s.cls}</span>` : '';
-
-  const row = (iconHtml, iconCls, label, value) => value
-    ? `<div class="info-row">
-         <div class="info-icon ${iconCls}">${iconHtml}</div>
-         <div><div class="info-label">${label}</div><div class="info-value">${value}</div></div>
-       </div>` : '';
-
-  return `
-  <div class="card" style="animation-delay:${idx*0.05}s">
-    <div class="card-header">
-      ${avatarHtml}
-      <div class="header-info">
-        <div class="student-name">${s.name || '—'}</div>
-        <div class="reg-num">Reg# ${s.reg_no} &nbsp;·&nbsp; ${s.bform}</div>
-        <div class="badges">${cBadge}${gBadge}</div>
-      </div>
-    </div>
+function card(s, idx) {
+  const col = acolor(s.name||'X'), t = thumb(s.img);
+  const av = t
+    ? `<img class="av-img" src="${t}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="av-txt" style="background:${col};display:none">${ini(s.name)}</div>`
+    : `<div class="av-txt" style="background:${col}">${ini(s.name)}</div>`;
+  const gb = s.gen ? `<span class="badge ${s.gen==='Male'?'bm':'bf'}">${s.gen}</span>` : '';
+  const cb = s.cls ? `<span class="badge bc">Class ${s.cls}</span>` : '';
+  const row = (ic,cl,lb,vl) => vl ? `<div class="irow"><div class="iico ${cl}">${ic}</div><div><div class="ilbl">${lb}</div><div class="ival">${vl}</div></div></div>` : '';
+  return `<div class="card" style="animation-delay:${idx*.04}s">
+    <div class="card-header">${av}<div class="hinfo"><div class="sname">${s.name||'—'}</div><div class="rnum">Reg# ${s.reg} · ${s.bform}</div><div class="badges">${cb}${gb}</div></div></div>
     <div class="card-body">
-      ${row(ICONS.father,   'icon-bg-blue',   'Father',        s.father)}
-      ${row(ICONS.id,       'icon-bg-purple',  'Father CNIC',   s.father_cnic)}
-      ${row(ICONS.calendar, 'icon-bg-green',   'Date of Birth', s.dob)}
-      ${row(ICONS.calendar, 'icon-bg-teal',    'Admission',     s.admission)}
-      ${row(ICONS.phone,    'icon-bg-orange',  'Phone',         s.phone)}
-      ${row(ICONS.home,     'icon-bg-pink',    'Address',       s.address)}
+      ${row(I.p,'ib','Father',s.dad)}${row(I.i,'ip','Father CNIC',s.cnic)}
+      ${row(I.c,'ig','Date of Birth',s.dob)}${row(I.c,'it','Admission',s.adm)}
+      ${row(I.h,'io','Phone',s.ph)}${row(I.a,'ik','Address',s.addr)}
     </div>
-    <div class="card-footer">
-      ${ICONS.clock} ${s.timestamp}
-      ${s.teacher ? `<span class="teacher-tag">👩‍🏫 ${s.teacher}</span>` : ''}
-    </div>
+    <div class="card-footer">${I.t} ${s.ts}${s.tch?`<span class="ttag">👩‍🏫 ${s.tch}</span>`:''}</div>
   </div>`;
 }
 
-// ── Populate filter dropdowns ──
-function populateFilters(students) {
-  const classes  = [...new Set(students.map(s=>s.cls).filter(Boolean))].sort();
-  const teachers = [...new Set(students.map(s=>s.teacher).filter(Boolean))].sort();
-
-  const cf = document.getElementById('filter-class');
-  cf.innerHTML = '<option value="">All Classes</option>';
-  classes.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=`Class ${c}`; cf.appendChild(o); });
-
-  const tf = document.getElementById('filter-teacher');
-  tf.innerHTML = '<option value="">All Teachers</option>';
-  teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; tf.appendChild(o); });
+function fillFilters(students) {
+  const cls=[...new Set(students.map(s=>s.cls).filter(Boolean))].sort();
+  const tch=[...new Set(students.map(s=>s.tch).filter(Boolean))].sort();
+  const cf=document.getElementById('fcls');
+  cf.innerHTML='<option value="">All Classes</option>';
+  cls.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=`Class ${c}`;cf.appendChild(o);});
+  const tf=document.getElementById('ftch');
+  tf.innerHTML='<option value="">All Teachers</option>';
+  tch.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;tf.appendChild(o);});
 }
 
-// ── Render filtered cards ──
 function render() {
-  const q  = (document.getElementById('search').value || '').toLowerCase();
-  const cl = document.getElementById('filter-class').value;
-  const gn = document.getElementById('filter-gender').value;
-  const tc = document.getElementById('filter-teacher').value;
-
-  const filtered = ALL_STUDENTS.filter(s => {
-    const txt = [s.name,s.reg_no,s.bform,s.father,s.address,s.phone,s.teacher].join(' ').toLowerCase();
-    if (q  && !txt.includes(q))       return false;
-    if (cl && s.cls !== cl)           return false;
-    if (gn && s.gender !== gn)        return false;
-    if (tc && s.teacher !== tc)       return false;
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const cl=document.getElementById('fcls').value;
+  const gn=document.getElementById('fgen').value;
+  const tc=document.getElementById('ftch').value;
+  const f=ALL.filter(s=>{
+    if(q&&![s.name,s.reg,s.bform,s.dad,s.addr,s.ph,s.tch].join(' ').toLowerCase().includes(q))return false;
+    if(cl&&s.cls!==cl)return false;
+    if(gn&&s.gen!==gn)return false;
+    if(tc&&s.tch!==tc)return false;
     return true;
   });
-
-  const grid = document.getElementById('grid');
-  if (!filtered.length) {
-    grid.innerHTML = `<div class="empty">
-      <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.35;margin-bottom:10px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <h3>No students found</h3><p>Try adjusting your filters or search.</p></div>`;
-  } else {
-    grid.innerHTML = filtered.map((s,i) => buildCard(s,i)).join('');
-  }
-
-  const males   = filtered.filter(s=>s.gender==='Male').length;
-  const females = filtered.filter(s=>s.gender==='Female').length;
-  const clsSet  = [...new Set(filtered.map(s=>s.cls).filter(Boolean))].length;
-  document.getElementById('stats-bar').innerHTML = `
-    <div class="stat-chip"><span>${filtered.length}</span>Students</div>
-    <div class="stat-chip"><span>${males}</span>Male</div>
-    <div class="stat-chip"><span>${females}</span>Female</div>
-    <div class="stat-chip"><span>${clsSet}</span>Classes</div>`;
-
-  document.getElementById('header-count').textContent =
-    `${filtered.length} student${filtered.length!==1?'s':''} registered`;
+  const g=document.getElementById('grid');
+  g.innerHTML=f.length?f.map((s,i)=>card(s,i)).join(''):`<div class="msg"><h3>No students found</h3><p>Try adjusting filters.</p></div>`;
+  const m=f.filter(s=>s.gen==='Male').length, fe=f.filter(s=>s.gen==='Female').length;
+  document.getElementById('sbar').innerHTML=`<div class="stat-chip"><span>${f.length}</span>Students</div><div class="stat-chip"><span>${m}</span>Male</div><div class="stat-chip"><span>${fe}</span>Female</div><div class="stat-chip"><span>${[...new Set(f.map(s=>s.cls).filter(Boolean))].length}</span>Classes</div>`;
+  document.getElementById('hcount').textContent=`${f.length} student${f.length!==1?'s':''} registered`;
 }
 
-// ── Load from CSV URL ──
-async function loadFromURL() {
-  const rawUrl = document.getElementById('csv-url-input').value.trim();
-  if (!rawUrl) { alert('Please paste your Google Sheet CSV URL first.'); return; }
+async function loadSheet() {
+  const url = document.getElementById('csv-input').value.trim();
+  if (!url) { alert('Please paste your Google Sheet CSV URL.'); return; }
 
-  // Save URL to localStorage for next visit
-  try { localStorage.setItem('sheet_csv_url', rawUrl); } catch(e) {}
+  const btn = document.getElementById('load-btn');
+  btn.disabled = true; btn.textContent = 'Loading…';
 
-  // Use a CORS proxy for CSV fetch
-  const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(rawUrl)}`;
+  try { localStorage.setItem('csv_url', url); } catch(e) {}
 
-  document.getElementById('grid').innerHTML = `
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <h3>Loading students…</h3>
-      <p>Fetching data from Google Sheets</p>
-    </div>`;
+  document.getElementById('grid').innerHTML = `<div class="msg"><div class="spinner"></div><h3>Loading students…</h3><p id="ps">Connecting…</p></div>`;
   document.getElementById('controls').style.display = 'none';
 
-  try {
-    const res = await fetch(proxyUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text = await res.text();
-    const rows = parseCSV(text);
-    if (rows.length < 2) throw new Error('Sheet appears empty or headers only.');
+  const proxies = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  ];
 
-    // Skip header row (row 0)
-    ALL_STUDENTS = rows.slice(1)
-      .map(rowToStudent)
-      .filter(s => s.name); // skip blank rows
+  let csvText = null;
+  for (let i = 0; i < proxies.length; i++) {
+    const ps = document.getElementById('ps');
+    if (ps) ps.textContent = `Trying connection ${i+1}/${proxies.length}…`;
+    try {
+      const ctrl = new AbortController();
+      const tid  = setTimeout(() => ctrl.abort(), 9000);
+      const res  = await fetch(proxies[i], { signal: ctrl.signal });
+      clearTimeout(tid);
+      if (res.ok) {
+        const t = await res.text();
+        if (t && t.length > 30) { csvText = t; break; }
+      }
+    } catch(e) { /* try next */ }
+  }
 
-    if (!ALL_STUDENTS.length) throw new Error('No student records found.');
+  btn.disabled = false; btn.textContent = 'Load ▶';
 
-    populateFilters(ALL_STUDENTS);
-    document.getElementById('setup-banner').style.display = 'none';
-    document.getElementById('controls').style.display = 'block';
-    render();
+  if (!csvText) {
+    document.getElementById('grid').innerHTML = `<div class="msg err"><h3>⚠️ Could not load data</h3><p style="font-size:.85rem;color:#b91c1c;margin-top:6px">All connections failed.</p><p style="font-size:.82rem;color:var(--muted);margin-top:8px">Make sure your sheet is published as CSV.</p><button class="rbtn" onclick="loadSheet()">🔄 Retry</button></div>`;
+    document.getElementById('hcount').textContent = 'Connection failed';
+    return;
+  }
 
-    ['search','filter-class','filter-gender','filter-teacher'].forEach(id => {
+  const rows = parseCSV(csvText);
+  ALL = rows.slice(1).map(toS).filter(s => s.name.length > 0);
+
+  if (!ALL.length) {
+    document.getElementById('grid').innerHTML = `<div class="msg err"><h3>⚠️ No records found</h3><p>The sheet loaded but has no student data.</p></div>`;
+    return;
+  }
+
+  fillFilters(ALL);
+  document.getElementById('setup-banner').style.display = 'none';
+  document.getElementById('controls').style.display = 'block';
+  render();
+
+  if (!listening) {
+    listening = true;
+    ['search','fcls','fgen','ftch'].forEach(id => {
       document.getElementById(id).addEventListener('input', render);
       document.getElementById(id).addEventListener('change', render);
     });
-  } catch (err) {
-    document.getElementById('grid').innerHTML = `
-      <div class="error-state">
-        <h3>⚠️ Could not load data</h3>
-        <p style="margin-top:6px;font-size:0.85rem">${err.message}</p>
-        <p style="margin-top:8px;font-size:0.82rem;color:var(--muted)">Make sure your sheet is published as CSV and the URL is correct.</p>
-      </div>`;
-    document.getElementById('header-count').textContent = 'Connection failed';
   }
 }
 
-// ── Auto-load saved URL on page open ──
+document.getElementById('load-btn').addEventListener('click', loadSheet);
+
 window.addEventListener('DOMContentLoaded', () => {
   try {
-    const saved = localStorage.getItem('sheet_csv_url');
-    if (saved) {
-      document.getElementById('csv-url-input').value = saved;
-      loadFromURL();
-    }
+    const saved = localStorage.getItem('csv_url');
+    if (saved) { document.getElementById('csv-input').value = saved; loadSheet(); }
   } catch(e) {}
 });
 </script>
